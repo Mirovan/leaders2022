@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="inc/head.inc::head"></head>
+
+<body>
+
+<!-- Navigation -->
+<div th:replace="inc/top_nav.inc::top_nav"></div>
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <h1>Попытки пользователя</h1>
+            </div>
+        </div>
+    </div>
+    <!--/.page-header-->
+
+    <div class="bs-docs-section">
+        <div class="row" th:each="appointUserTest : ${appointUserTests}">
+            <div class="col-lg-12">
+                <h4>
+                    <p>Тест: <span th:text="${appointUserTest.test.name}"></span></p>
+                </h4>
+
+                <div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Попытка</th>
+                            <th>Дата проходения теста</th>
+                            <th>Результат (правильных)</th>
+                            <th>Результат (баллы)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="attempt, iterator : ${appointUserTest.userAttempts}">
+                            <th scope="row" th:text="@{${iterator.index} + 1}"></th>
+                            <td>
+                                <span th:text="${attempt.startdate}"></span>
+                                <span th:text="${attempt.enddate}"></span>
+                            </td>
+                            <td>
+                                <th:block th:if="${attempt.attemptResult != null}">
+                                    <span th:text="${attempt.attemptResult.correctSolutionCount}"></span>
+                                    из
+                                    <span th:text="${attempt.attemptResult.questionCount}"></span>
+                                </th:block>
+                            </td>
+                            <td>
+                                <th:block th:if="${attempt.attemptResult == null and attempt.attemptStatus == T(AttemptStatus).IN_PROGRESS}">
+                                    Тест в режиме прохождения
+                                </th:block>
+                                <th:block th:if="${attempt.attemptResult == null and attempt.attemptStatus == T(AttemptStatus).FINISHED}">
+                                    Попытка тест окончена, но ответы не отправлены
+                                </th:block>
+                                <th:block th:if="${attempt.attemptResult != null}">
+                                    <span th:text="${attempt.attemptResult.grade}"></span>
+                                </th:block>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.bs-docs-section -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer th:replace="inc/footer.inc::footer"></footer>
+
+<!-- Bootstrap core JavaScript -->
+<div th:replace="inc/js.inc::js"></div>
+
+</body>
+
+</html>

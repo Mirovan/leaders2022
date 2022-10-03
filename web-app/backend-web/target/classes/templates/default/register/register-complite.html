@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:include="inc/head.inc::head"></head>
+
+<body>
+
+<!-- Navigation -->
+<div th:replace="inc/top_nav.inc::top_nav"></div>
+
+<!-- Page Content -->
+<div class="container">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<h1>Регистрация успешна</h1>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-lg-12">
+			<p>
+				<strong>Ваш пароль:</strong> <span th:text="${password}"></span>
+			</p>
+			<p>
+				<a href="/login/">Войти в личный кабинет</a>
+			</p>
+		</div>
+	</div>
+	<!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+	<div class="container">
+		<p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+	</div>
+	<!-- /.container -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<div th:include="inc/js.inc::js"></div>
+
+</body>
+
+</html>

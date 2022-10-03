@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="inc/head.inc::head"></head>
+
+<body>
+
+<!-- Navigation -->
+<div th:replace="inc/top_nav.inc::top_nav"></div>
+
+<!-- Page Content -->
+<div class="container">
+
+	<div class="page-header" id="banner">
+		<div class="row">
+			<div class="col-lg-8 col-md-7 col-sm-6">
+				<h1>Авторизация</h1>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="bs-docs-section">
+		<div class="row">
+			<div class="col-lg-9">
+
+				<form th:action="@{/login/}" id="login-form" method="post">
+					<div class="alert alert-dismissible alert-danger" th:if="${(param.error != null) and (param.error[0] == 'true')}">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<strong>Error!</strong>
+						Auth error. Bad login or password.
+					</div>
+
+					<!--<span th:text="${param.error}"></span>-->
+					<!--<div id="errors" th:if="${(param.error != null) and (param.error[0] == 'true')}">-->
+						<!--Auth error. Bad login or password.-->
+					<!--</div>-->
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">Email address</label>
+						<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" name="email" required="required">
+						<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputPassword1">Password</label>
+						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password" required="required">
+					</div>
+
+					<div>
+						<button type="submit" class="btn btn-primary btn-lg">Войти</button>
+					</div>
+
+					<div class="clearfix"></div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+	<!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer th:replace="inc/footer.inc::footer"></footer>
+
+<!-- Bootstrap core JavaScript -->
+<div th:replace="inc/js.inc::js"></div>
+
+</body>
+
+</html>

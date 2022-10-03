@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="inc/head.inc::head"></head>
+
+<body>
+
+<!-- Navigation -->
+<div th:replace="inc/top_nav.inc::top_nav"></div>
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6">
+                <h1>Пользователи</h1>
+            </div>
+        </div>
+    </div>
+    <!--/.page-header-->
+
+    <div class="bs-docs-section">
+        <div class="row">
+            <div class="col-lg-12">
+                <p>
+                    <a href="/cabinet/users/add/" class="btn btn-primary btn-lg">Добавить пользователя</a>
+                </p>
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Пользователь</th>
+                        <th>Редактировать</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user, iterator : ${users}">
+                        <th scope="row" th:text="@{${iterator.index} + 1}"></th>
+                        <td>
+                            <span th:text="${user.name}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/cabinet/users/' + ${user.id} + '/edit/'}">Изменить</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.bs-docs-section -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer th:include="inc/footer.inc::footer"></footer>
+
+<!-- Bootstrap core JavaScript -->
+<div th:replace="inc/js.inc::js"></div>
+
+</body>
+
+</html>
