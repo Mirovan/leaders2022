@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.bigint.webapp.data.dao.user.UserDAO;
+import ru.bigint.webapp.data.dao.user.UserRepo;
 import ru.bigint.webapp.data.entity.user.User;
 import ru.bigint.webapp.service.iface.user.UserService;
 
@@ -18,15 +18,15 @@ public class UserServiceImpl implements UserService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    private final UserDAO userDAO;
+    private final UserRepo userRepo;
 
-    public UserServiceImpl(@Qualifier("userDAO") UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserServiceImpl(@Qualifier("userDAO") UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Override
     public void add(User user) {
-        userDAO.save(user);
+        userRepo.save(user);
     }
 
 
@@ -39,35 +39,35 @@ public class UserServiceImpl implements UserService {
         user.setRoles( updateUser.getRoles() );
         user.setActive( updateUser.getActive() );
 
-        userDAO.save(user);
+        userRepo.save(user);
     }
 
 
     @Override
     public User getById(Integer id) {
-        return userDAO.findById(id).get();
+        return userRepo.findById(id).get();
     }
 
 
     @Override
     public User getByEmail(String email) {
-        User user = userDAO.findByEmail(email);
+        User user = userRepo.findByEmail(email);
         return user;
     }
 
 
     @Override
     public List<User> getAll() {
-        return userDAO.findAll();
+        return userRepo.findAll();
     }
 
 
     @Override
     public List<User> getAllByOrder(String order) {
         if ( "ASC".equals(order) )
-            return userDAO.findAll(Sort.by(Sort.Direction.ASC, "id"));
+            return userRepo.findAll(Sort.by(Sort.Direction.ASC, "id"));
         else
-            return userDAO.findAll(Sort.by(Sort.Direction.DESC, "id"));
+            return userRepo.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
 

@@ -15,7 +15,7 @@
     <div class="page-header" id="banner">
         <div class="row">
             <div class="col-lg-12 col-md-7 col-sm-6">
-                <h2>Поиск Youtube-каналов</h2>
+                <h2>Карта</h2>
                 <br />
             </div>
         </div>
@@ -24,27 +24,6 @@
             <form method="get" action="/">
                 <div class="row">
                     <div class="col">
-                        Возраст ЦА
-                        <input type="text" class="form-control" placeholder="Возраст ЦА от" name="ageFrom" th:value="${searchQuery.getAgeFrom()}"/>
-                    </div>
-                    <div class="col">
-                        <br />
-                        <input type="text" class="form-control" placeholder="Возраст ЦА до" name="ageTo" th:value="${searchQuery.getAgeTo()}"/>
-                    </div>
-                    <div class="col">
-                        Тематика канала
-                        <select class="custom-select" name="categoryId">
-                            <option value="">- Тематика- </option>
-                            <option value="1" th:selected="${#strings.equals(searchQuery.getCategoryId(), '1')}">Инвестиции</option>
-                            <option value="2" th:selected="${#strings.equals(searchQuery.getCategoryId(), '2')}">Недвижимость</option>
-                            <option value="3" th:selected="${#strings.equals(searchQuery.getCategoryId(), '3')}">Интервью</option>
-                            <option value="4" th:selected="${#strings.equals(searchQuery.getCategoryId(), '4')}">Политика</option>
-                            <option value="5" th:selected="${#strings.equals(searchQuery.getCategoryId(), '5')}">Развлечения</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <br />
-                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>
@@ -54,26 +33,6 @@
             <hr/>
         </div>
 
-        <div class="row">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Канал</th>
-                    <th scope="col">Число подписчиков</th>
-                    <th scope="col">Потенциальная ЦА</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="channel, iterator : ${channels}">
-                    <th scope="row"><p class="card-text" th:text="${iterator.index + 1}"></p></th>
-                    <td><p class="card-text" th:text="${channel.name}"></p></td>
-                    <td><p class="card-text" th:text="${channel.getFollowersCount()}"></p></td>
-                    <td><p class="card-text" th:text="${channel.getFollowersCount() / 32 }"></p></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 
 </div>

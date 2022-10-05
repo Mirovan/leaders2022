@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.bigint.webapp.data.entity.user.User;
 
 @Repository("userDAO")
-public interface UserDAO extends JpaRepository<User, Integer> {
+public interface UserRepo extends JpaRepository<User, Integer> {
     User findByEmail(String email);
 }
