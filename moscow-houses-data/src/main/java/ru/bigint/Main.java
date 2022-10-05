@@ -5,6 +5,7 @@ import ru.bigint.model.HouseHeat;
 import ru.bigint.util.CoordParser;
 import ru.bigint.util.HouseCoordHeatmap;
 import ru.bigint.util.HouseParser;
+import ru.bigint.util.SqlBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +22,31 @@ public class Main {
 //        getOnlyAdress();
 //        //Получение координат домов
 //        parseCoord();
-        getHeatmap();
+//        //Дома с числом домов в радиусе
+//        getHeatmap();
+        //сохранение скрипта SQL
+        createSqlQuery();
+    }
+
+    private static void createSqlQuery() {
+        List<House> houses = SqlBuilder.create();
+
+        Path output = Paths.get("C:/JavaProject/leaders2022/moscow-houses-data/data/dump.txt");
+        try {
+            int i = 0;
+            for (var line : houses) {
+                i++;
+                Files.writeString(output, "INSERT INTO houses VALUES("
+                        + i + ", "
+                        + "'" + line.getAddress() + "', "
+                        + line.getSquare() + ", "
+                        + line.getLatitude() + ", "
+                        + line.getLongitude() + ");"
+                        + "\n", StandardOpenOption.APPEND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void getHeatmap() {
