@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import ru.bigint.webapp.data.entity.House;
-import ru.bigint.webapp.service.iface.house.HouseService;
+import ru.bigint.webapp.entity.House;
+import ru.bigint.webapp.service.iface.HouseService;
 
 import java.util.List;
 

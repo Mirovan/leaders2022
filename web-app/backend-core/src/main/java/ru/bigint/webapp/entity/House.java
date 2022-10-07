@@ -1,6 +1,11 @@
-package ru.bigint.webapp.data.entity;
+package ru.bigint.webapp.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "houses")
@@ -14,13 +19,13 @@ public class House {
     private String address;
 
     @Column(name = "square")
-    private double square;
+    private Double square;
 
     @Column(name = "latitude")
-    private double latitude;
+    private Double latitude;
 
     @Column(name = "longitude")
-    private double longitude;
+    private Double longitude;
 
     public House() {
     }
@@ -41,27 +46,27 @@ public class House {
         this.address = address;
     }
 
-    public double getSquare() {
+    public Double getSquare() {
         return square;
     }
 
-    public void setSquare(double square) {
+    public void setSquare(Double square) {
         this.square = square;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 }

@@ -1,9 +1,9 @@
-package ru.bigint.webapp.service.impl.house;
+package ru.bigint.webapp.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.bigint.webapp.data.dao.house.HouseRepo;
-import ru.bigint.webapp.data.entity.House;
-import ru.bigint.webapp.service.iface.house.HouseService;
+import ru.bigint.webapp.entity.House;
+import ru.bigint.webapp.repository.HouseRepo;
+import ru.bigint.webapp.service.iface.HouseService;
 
 import java.util.List;
 
