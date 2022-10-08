@@ -1,14 +1,12 @@
-package ru.bigint.util;
+package ru.bigint.houses.service;
 
-import org.locationtech.jts.awt.PointShapeFactory;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.util.GeometricShapeFactory;
-import org.opengis.geometry.Geometry;
-import ru.bigint.model.House;
-import ru.bigint.model.HouseHeat;
+import ru.bigint.houses.model.House;
+import ru.bigint.houses.model.HouseHeat;
 
 import java.io.IOException;
 import java.nio.file.Files;

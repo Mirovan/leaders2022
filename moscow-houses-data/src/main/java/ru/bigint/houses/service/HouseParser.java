@@ -1,16 +1,12 @@
-package ru.bigint.util;
+package ru.bigint.houses.service;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.bigint.model.House;
-import ru.bigint.model.YearLink;
+import ru.bigint.houses.model.House;
+import ru.bigint.houses.model.YearLink;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

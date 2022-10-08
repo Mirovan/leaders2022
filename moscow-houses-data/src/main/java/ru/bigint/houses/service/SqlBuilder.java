@@ -1,6 +1,6 @@
-package ru.bigint.util;
+package ru.bigint.houses.service;
 
-import ru.bigint.model.House;
+import ru.bigint.houses.model.House;
 
 import java.io.IOException;
 import java.nio.file.Files;

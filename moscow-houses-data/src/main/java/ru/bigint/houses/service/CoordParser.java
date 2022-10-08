@@ -1,9 +1,9 @@
-package ru.bigint.util;
+package ru.bigint.houses.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.bigint.model.House;
+import ru.bigint.houses.model.House;
 import ru.bigint.model.positionstack.CoordData;
 import ru.bigint.model.positionstack.CoordItem;
 

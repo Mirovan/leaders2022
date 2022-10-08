@@ -1,11 +1,11 @@
-package ru.bigint;
+package ru.bigint.houses;
 
-import ru.bigint.model.House;
-import ru.bigint.model.HouseHeat;
-import ru.bigint.util.CoordParser;
-import ru.bigint.util.HouseCoordHeatmap;
-import ru.bigint.util.HouseParser;
-import ru.bigint.util.SqlBuilder;
+import ru.bigint.houses.model.House;
+import ru.bigint.houses.model.HouseHeat;
+import ru.bigint.houses.service.CoordParser;
+import ru.bigint.houses.service.HouseCoordHeatmap;
+import ru.bigint.houses.service.HouseParser;
+import ru.bigint.houses.service.SqlBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
-public class Main {
+public class MainHouses {
     public static void main(String[] args) throws IOException {
 //        //Парсинг домов с сайта
 //        parseHouses();

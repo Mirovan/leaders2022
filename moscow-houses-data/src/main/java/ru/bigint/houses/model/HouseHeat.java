@@ -1,4 +1,4 @@
-package ru.bigint.model;
+package ru.bigint.houses.model;
 
 public class HouseHeat {
     private House house;

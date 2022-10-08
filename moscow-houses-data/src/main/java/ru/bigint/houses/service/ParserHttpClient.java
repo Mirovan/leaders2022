@@ -1,6 +1,5 @@
-package ru.bigint.util;
+package ru.bigint.houses.service;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
