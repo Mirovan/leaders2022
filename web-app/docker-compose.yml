@@ -16,7 +16,7 @@ services:
     image: "liquibase/liquibase"
     build:
       context: ./migration
-    entrypoint: ["/wait-for-it.sh", "database:5432", "--", "/liquibase/liquibase_run.sh"]
+    entrypoint: ["/wait-for-it.sh", "database:5432", "--", "/db/liquibase_run.sh"]
     depends_on:
       - database
 
