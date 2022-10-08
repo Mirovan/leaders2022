@@ -3,8 +3,10 @@ package ru.bigint.webapp.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ru.bigint.webapp.entity.House;
 import ru.bigint.webapp.service.iface.HouseService;
@@ -26,7 +28,15 @@ public class IndexController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         List<House> list = houseService.getAll();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("list", list);
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
 
+    @GetMapping("/kml")
+    @ResponseBody
+    public String kml() {
         String kml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<kml xmlns=\"http://earth.google.com/kml/2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n" +
                 "    <Document>\n" +
@@ -46,12 +56,7 @@ public class IndexController {
                 "        </Folder>\n" +
                 "    </Document>\n" +
                 "</kml>\n";
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("list", list);
-        modelAndView.addObject("kml", kml);
-        modelAndView.setViewName("index");
-        return modelAndView;
+        return kml;
     }
 
 }
