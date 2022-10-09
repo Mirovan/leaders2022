@@ -1,7 +1,9 @@
 package ru.bigint.malls;
 
 import ru.bigint.malls.model.Mall;
+import ru.bigint.malls.service.MallCoordParser;
 import ru.bigint.malls.service.MallParser;
+import ru.bigint.malls.service.MallSqlBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,16 +14,12 @@ import java.util.List;
 
 public class MainMalls {
     public static void main(String[] args) throws IOException {
-        //Парсинг ТЦ с сайта
-        parseMalls();
-//        //Получение домов и их адресов
-//        getOnlyAdress();
-//        //Получение координат домов
+//        //Парсинг ТЦ с сайта
+//        parseMalls();
+//        //Получение координат
 //        parseCoord();
-//        //Дома с числом домов в радиусе
-//        getHeatmap();
-//        //сохранение скрипта SQL
-//        createSqlQuery();
+        //сохранение скрипта SQL
+        createSqlQuery();
     }
 
     private static void parseMalls() {
@@ -42,76 +40,47 @@ public class MainMalls {
         }
     }
 
-//    private static void createSqlQuery() {
-//        List<House> houses = SqlBuilder.create();
-//
-//        Path output = Paths.get("C:/JavaProject/leaders2022/moscow-houses-data/data/dump.txt");
-//        try {
-//            int i = 0;
-//            for (var line : houses) {
-//                i++;
-//                Files.writeString(output, "INSERT INTO houses VALUES("
-//                        + i + ", "
-//                        + "'" + line.getAddress() + "', "
-//                        + line.getSquare() + ", "
-//                        + line.getLatitude() + ", "
-//                        + line.getLongitude() + ");"
-//                        + "\n", StandardOpenOption.APPEND);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private static void getHeatmap() {
-//        List<HouseHeat> houses = HouseCoordHeatmap.getHeatmap();
-//
-//        Path output = Paths.get("C:/JavaProject/domdataparser/data/heat.txt");
-//        try {
-//            for (var line : houses) {
-//                Files.writeString(output, line.getHouse().getAddress() + "; "
-//                        + line.getHouse().getClearedAddress() + "; "
-//                        + line.getHouse().getSquare() + "; "
-//                        + line.getHouse().getLatitude() + "; "
-//                        + line.getHouse().getLongitude() + "; "
-//                        + line.getBelongPoints() + "; "
-//                        + "\n", StandardOpenOption.APPEND);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private static void parseCoord() {
-//        List<House> houses = CoordParser.parseCoords();
-//
-//        Path output = Paths.get("C:/JavaProject/domdataparser/data/coords.txt");
-//        try {
-//            for (var line : houses) {
-//                Files.writeString(output, line.getAddress() + "; "
-//                        + line.getClearedAddress() + "; "
-//                        + line.getSquare() + "; "
-//                        + line.getLatitude() + "; "
-//                        + line.getLongitude() + "; "
-//                        + "\n", StandardOpenOption.APPEND);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private static void getOnlyAdress() throws IOException {
-//        List<String> list = null;
-//        try {
-//            list = Files.readAllLines(Paths.get("C:/JavaProject/domdataparser/data/houses.txt"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Path output = Paths.get("C:/JavaProject/domdataparser/data/houses_array.txt");
-//
-//        for (var line : list) {
-//            String address = line.substring(0, line.indexOf(";"));
-//            Files.writeString(output, address + "\n", StandardOpenOption.APPEND);
-//        }
-//    }
+    private static void parseCoord() {
+        List<Mall> houses = MallCoordParser.parseCoords();
+
+        Path output = Paths.get("C:/JavaProject/leaders2022/moscow-houses-data/malls-data/coords.txt");
+        try {
+            for (var line : houses) {
+                Files.writeString(output,
+                        line.getName() + "; "
+                        + line.getAddress() + "; "
+                        + line.getClearedAddress() + "; "
+                        + line.getAbout() + "; "
+                        + line.getPhone() + "; "
+                        + line.getLatitude() + "; "
+                        + line.getLongitude() + "; "
+                        + "\n", StandardOpenOption.APPEND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void createSqlQuery() {
+        List<Mall> houses = MallSqlBuilder.create();
+
+        Path output = Paths.get("C:/JavaProject/leaders2022/moscow-houses-data/malls-data/dump.txt");
+        try {
+            int i = 0;
+            for (var line : houses) {
+                i++;
+                Files.writeString(output, "INSERT INTO houses VALUES("
+                        + i + ", "
+                        + "'" + line.getName() + "', "
+                        + "'" + line.getAddress() + "', "
+                        + "'" + line.getAbout() + "', "
+                        + "'" + line.getPhone() + "', "
+                        + line.getLatitude() + ", "
+                        + line.getLongitude() + ");"
+                        + "\n", StandardOpenOption.APPEND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

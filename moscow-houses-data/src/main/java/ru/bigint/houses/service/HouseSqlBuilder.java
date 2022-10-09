@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlBuilder {
+public class HouseSqlBuilder {
 
     public static List<House> create() {
         List<String> houses = null;

@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class CoordParser {
+public class HouseCoordParser {
     private static String host = "http://api.positionstack.com/v1/forward";
     private static String accessKey = "fca2e3beebc5e2a7e9be126b89bf2b99";
     private static int fromIndex = 33001;

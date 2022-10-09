@@ -2,10 +2,10 @@ package ru.bigint.houses;
 
 import ru.bigint.houses.model.House;
 import ru.bigint.houses.model.HouseHeat;
-import ru.bigint.houses.service.CoordParser;
+import ru.bigint.houses.service.HouseCoordParser;
 import ru.bigint.houses.service.HouseCoordHeatmap;
 import ru.bigint.houses.service.HouseParser;
-import ru.bigint.houses.service.SqlBuilder;
+import ru.bigint.houses.service.HouseSqlBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,7 +29,7 @@ public class MainHouses {
     }
 
     private static void createSqlQuery() {
-        List<House> houses = SqlBuilder.create();
+        List<House> houses = HouseSqlBuilder.create();
 
         Path output = Paths.get("C:/JavaProject/leaders2022/moscow-houses-data/data/dump.txt");
         try {
@@ -69,7 +69,7 @@ public class MainHouses {
     }
 
     private static void parseCoord() {
-        List<House> houses = CoordParser.parseCoords();
+        List<House> houses = HouseCoordParser.parseCoords();
 
         Path output = Paths.get("C:/JavaProject/domdataparser/data/coords.txt");
         try {
