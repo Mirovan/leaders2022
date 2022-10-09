@@ -11,3 +11,15 @@ footer {
     width: 100%;
     height: 800px;
 }
+.red-bg-marker {
+    background: #ff0000;
+}
+.orange-bg-marker {
+    background: #ff8000;
+}
+.gray-bg-marker {
+    background: rgba(0, 0, 0, 0.05);
+}
+.green-bg-marker {
+    background: #00ff00;
+}

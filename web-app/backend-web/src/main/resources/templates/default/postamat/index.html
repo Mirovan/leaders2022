@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="inc/head.inc::head"></head>
+
+<body>
+
+<!-- Navigation -->
+<div th:replace="inc/top_nav.inc::top_nav"></div>
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-12 col-md-7 col-sm-6">
+                <h2>Постаматы</h2>
+            </div>
+        </div>
+
+        <div class="bs-docs-section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Место размещения</th>
+                            <th>Использование в мес.</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item, iterator : ${postamats}">
+                            <th scope="row" th:text="@{${iterator.index} + 1}"></th>
+                            <td>
+                                <span th:text="|${item.placeName} (${item.address})|"></span>
+                            </td>
+
+                            <td th:if="${item.useMonth > 10000}" class="red-bg-marker">
+                                <span th:text="${item.useMonth}"></span>
+                            </td>
+
+                            <td th:if="${item.useMonth < 2000}" class="green-bg-marker">
+                                <span th:text="${item.useMonth}"></span>
+                            </td>
+
+                            <td th:if="${item.useMonth >= 2000 && item.useMonth <= 10000}" class="gray-bg-marker">
+                                <span th:text="${item.useMonth}"></span>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+
+        <div class="row">
+            <hr/>
+        </div>
+
+    </div>
+
+</div>
+<!-- /.container -->
+
+
+<!-- Footer -->
+<footer th:replace="inc/footer.inc::footer"></footer>
+
+<!-- Bootstrap core JavaScript -->
+<div th:replace="inc/js.inc::js"></div>
+
+</body>
+
+</html>
