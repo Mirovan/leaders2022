@@ -32,8 +32,10 @@ public class MallSqlBuilder {
         Mall mall = new Mall();
         mall.setName(arr[0].trim());
         mall.setAddress(arr[1].trim());
-        mall.setAbout(arr[2].replace("Рейтинг: Отзыв Рейтинг:", "").trim());
-        mall.setPhone(arr[3].trim());
+        mall.setAbout(arr[3].replace("Рейтинг: Отзыв:", "").trim());
+        mall.setPhone(arr[4].trim());
+        mall.setLatitude(arr[5].trim());
+        mall.setLongitude(arr[6].trim());
 
         return mall;
     }

@@ -27,6 +27,31 @@
             </column>
         </createTable>
 
+        <!--Malls-->
+        <createTable tableName="malls">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="about" type="varchar(3000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="phone" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="latitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="longitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
     </changeSet>
 
 </databaseChangeLog>

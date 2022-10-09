@@ -69,7 +69,7 @@ public class MainMalls {
             int i = 0;
             for (var line : houses) {
                 i++;
-                Files.writeString(output, "INSERT INTO houses VALUES("
+                Files.writeString(output, "INSERT INTO malls VALUES("
                         + i + ", "
                         + "'" + line.getName() + "', "
                         + "'" + line.getAddress() + "', "
