@@ -5,23 +5,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ru.bigint.webapp.dto.Postamat;
-import ru.bigint.webapp.entity.House;
-import ru.bigint.webapp.service.iface.HouseService;
 
 import java.util.List;
 
 
 @Controller
+@RequestMapping(value = "/postamat")
 public class PostamatController {
 
     private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping(value = "/postamat", method = RequestMethod.GET)
-    public ModelAndView index() {
+    @GetMapping()
+    public ModelAndView getAllPostamat() {
         List<Postamat> postamats = List.of(
                 new Postamat("ул. Цветной бульвар, 15 , корпус 1", "Цветной универмаг", 10217),
                 new Postamat("ул. Маршала Бирюзова, 32", "ТРЦ Пятая Авеню", 6224),
