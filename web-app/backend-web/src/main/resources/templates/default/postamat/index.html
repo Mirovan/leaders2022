@@ -35,7 +35,7 @@
                         <tr th:each="item, iterator : ${postamats}">
                             <th scope="row" th:text="@{${iterator.index} + 1}"></th>
                             <td>
-                                <span th:text="|${item.placeName} (${item.address})|"></span>
+                                <span th:text="|${item.place} (${item.address})|"></span>
                             </td>
 
                             <td th:if="${item.useMonth > 10000}" class="red-bg-marker">

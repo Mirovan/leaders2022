@@ -1,6 +1,6 @@
 package ru.bigint.webapp.dto;
 
-public class Postamat {
+public class PostamatDto {
     //Адрес
     private String address;
     //Тип места размещения
@@ -8,10 +8,10 @@ public class Postamat {
     //Число использований в месяц
     private int useMonth;
 
-    public Postamat() {
+    public PostamatDto() {
     }
 
-    public Postamat(String address, String placeName, int useMonth) {
+    public PostamatDto(String address, String placeName, int useMonth) {
         this.address = address;
         this.placeName = placeName;
         this.useMonth = useMonth;

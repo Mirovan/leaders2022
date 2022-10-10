@@ -52,6 +52,27 @@
             </column>
         </createTable>
 
+        <createTable tableName="postamats">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="place" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="longitude" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="use_month" type="double">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
     </changeSet>
 
 </databaseChangeLog>

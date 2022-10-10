@@ -21,12 +21,12 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public House add(House channel) {
+    public House add(House house) {
         return null;
     }
 
     @Override
-    public House update(House channel) {
+    public House update(House house) {
         return null;
     }
 
