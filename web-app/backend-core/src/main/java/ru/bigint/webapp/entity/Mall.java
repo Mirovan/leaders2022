@@ -36,7 +36,8 @@ public class Mall {
     public Mall() {
     }
 
-    public Mall(String name, String address, String about, String phone, Double latitude, Double longitude) {
+    public Mall(Integer id, String name, String address, String about, String phone, Double latitude, Double longitude) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.about = about;

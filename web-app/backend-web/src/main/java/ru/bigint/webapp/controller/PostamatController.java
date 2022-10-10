@@ -4,9 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ru.bigint.webapp.dto.Postamat;
+import ru.bigint.webapp.entity.Mall;
 
 import java.util.List;
 
@@ -33,4 +37,8 @@ public class PostamatController {
         return modelAndView;
     }
 
+    @PostMapping("/save")
+    public void savePostamat(@RequestParam Integer id) {
+        //ToDo: Сохранение установленного постамата
+    }
 }
