@@ -28,12 +28,17 @@ const map = new ol.Map({
 
 //Нажатие на карту
 map.on('click', function (evt) {
-    $.get("/malls/nearest", {latitude: "1", longitude: "2"})
+    var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+    var lon = lonlat[0];
+    var lat = lonlat[1];
+
+    console.log( lon.toFixed(6) + "  " + lat.toFixed(6) );
+    $.get("/malls/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
             document.querySelector("#nearest-malls").innerHTML = "";
             let tableData = "";
             for (let item in data) {
-                console.log(JSON.stringify(data[item]));
+                //console.log(JSON.stringify(data[item]));
 
                 tableData += "<tr>" +
                     "<td>" + data[item]["address"] + "<br />(" + data[item]["name"] + ")" + "</td>" +
