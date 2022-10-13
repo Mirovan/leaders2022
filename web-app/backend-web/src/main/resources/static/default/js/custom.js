@@ -45,6 +45,29 @@ map.on('click', function (evt) {
                     "<td>" + data[item]["phone"] + "</td>" +
                     "<td><button class='btn btn-outline-primary btn-sm'>Установить</button></td>"
                 "</tr>";
+
+                //Рисуем точки на карте - ближайшие объекты к нажатой точке
+                var centerLongitudeLatitude = ol.proj.fromLonLat([
+                    data[item]["longitude"], data[item]["latitude"]
+                ]);
+                var layer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        projection: 'EPSG:4326',
+                        features: [new ol.Feature(new ol.geom.Circle(centerLongitudeLatitude, 400))]
+                    }),
+                    style: [
+                        new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: 'blue',
+                                width: 3
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(0, 0, 255, 0.1)'
+                            })
+                        })
+                    ]
+                });
+                map.addLayer(layer);
             }
             document.querySelector("#nearest-malls").innerHTML = tableData;
         });

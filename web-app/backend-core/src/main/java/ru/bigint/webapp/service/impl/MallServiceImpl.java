@@ -4,7 +4,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.bigint.webapp.dto.Coord;
 import ru.bigint.webapp.dto.MallDto;
-import ru.bigint.webapp.entity.Mall;
 import ru.bigint.webapp.repository.MallRepo;
 import ru.bigint.webapp.service.iface.MallService;
 
