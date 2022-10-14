@@ -32,7 +32,7 @@ map.on('click', function (evt) {
     var lon = lonlat[0];
     var lat = lonlat[1];
 
-    console.log( lon.toFixed(6) + "  " + lat.toFixed(6) );
+    console.log(lon.toFixed(6) + "  " + lat.toFixed(6));
     $.get("/malls/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
             document.querySelector("#nearest-malls").innerHTML = "";
@@ -43,7 +43,12 @@ map.on('click', function (evt) {
                 tableData += "<tr>" +
                     "<td>" + data[item]["address"] + "<br />(" + data[item]["name"] + ")" + "</td>" +
                     "<td>" + data[item]["phone"] + "</td>" +
-                    "<td><button class='btn btn-outline-primary btn-sm'>Установить</button></td>"
+                    "<td><button class=\"btn btn-outline-primary btn-sm\" onclick=\"savePostamat(" +
+                    "'" + data[item]["name"] + "', " +
+                    "'" + data[item]["address"] + "', " +
+                    data[item]["latitude"] + ", " +
+                    data[item]["longitude"] +
+                    ")\">Установить</button></td>"
                 "</tr>";
 
                 //Рисуем точки на карте - ближайшие объекты к нажатой точке
@@ -72,3 +77,18 @@ map.on('click', function (evt) {
             document.querySelector("#nearest-malls").innerHTML = tableData;
         });
 });
+
+
+function savePostamat(place, address, latitude, longitude) {
+
+    jQuery.ajax({
+        url: "/postamats/save",
+        type: "POST",
+        data: JSON.stringify({place: place, address: address, latitude: latitude, longitude: longitude}),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(){
+            //ToDo: disable button
+        }
+    });
+}
