@@ -26,8 +26,11 @@ const map = new ol.Map({
 });
 
 
+
 //Нажатие на карту
 map.on('click', function (evt) {
+    clearMap('MALL');
+
     var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
     var lon = lonlat[0];
     var lat = lonlat[1];
@@ -58,13 +61,16 @@ map.on('click', function (evt) {
                 var layer = new ol.layer.Vector({
                     source: new ol.source.Vector({
                         projection: 'EPSG:4326',
-                        features: [new ol.Feature(new ol.geom.Circle(centerLongitudeLatitude, 400))]
+                        features: [
+                            new ol.Feature(new ol.geom.Circle(centerLongitudeLatitude, 300))
+                        ]
                     }),
+                    name: 'MALL',
                     style: [
                         new ol.style.Style({
                             stroke: new ol.style.Stroke({
                                 color: 'blue',
-                                width: 3
+                                width: 2
                             }),
                             fill: new ol.style.Fill({
                                 color: 'rgba(0, 0, 255, 0.1)'
@@ -79,8 +85,8 @@ map.on('click', function (evt) {
 });
 
 
+//Сохранение постамата
 function savePostamat(place, address, latitude, longitude) {
-
     jQuery.ajax({
         url: "/postamats/save",
         type: "POST",
@@ -91,4 +97,11 @@ function savePostamat(place, address, latitude, longitude) {
             //ToDo: disable button
         }
     });
+}
+
+
+function clearMap(layerName) {
+    map.getLayers().getArray()
+        .filter(layer => layer.get('name') === layerName)
+        .forEach(layer => map.removeLayer(layer));
 }
