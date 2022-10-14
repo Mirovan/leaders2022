@@ -15,6 +15,7 @@ import ru.bigint.webapp.service.iface.PostamatService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @Controller
@@ -66,7 +67,12 @@ public class PostamatController {
     @PostMapping("/save")
     @ResponseBody
     public Postamat savePostamat(@RequestBody Postamat postamat) {
-        postamat.setUseMonth(0);
+        postamat.setUseMonth(getRandomNumber(800, 20000));
         return postamatService.add(postamat);
+    }
+
+    private int getRandomNumber(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min) + min;
     }
 }
