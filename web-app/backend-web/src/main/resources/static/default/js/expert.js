@@ -1,3 +1,4 @@
+//Карта для heat-map
 const map = new ol.Map({
     target: 'map',
     layers: [

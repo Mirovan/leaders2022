@@ -16,48 +16,51 @@
         <div class="row">
             <div class="col-lg-12 col-md-7 col-sm-6">
                 <h2>Постаматы</h2>
+                <hr/>
             </div>
         </div>
 
-        <div class="bs-docs-section">
-            <div class="row">
-                <div class="col-lg-12">
-
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Место размещения</th>
-                            <th>Использование в мес.</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="item, iterator : ${postamats}">
-                            <th scope="row" th:text="@{${iterator.index} + 1}"></th>
-                            <td>
-                                <span th:text="|${item.place} (${item.address})|"></span>
-                            </td>
-
-                            <td th:if="${item.useMonth > 10000}" class="red-bg-marker">
-                                <span th:text="${item.useMonth}"></span>
-                            </td>
-
-                            <td th:if="${item.useMonth < 2000}" class="green-bg-marker">
-                                <span th:text="${item.useMonth}"></span>
-                            </td>
-
-                            <td th:if="${item.useMonth >= 2000 && item.useMonth <= 10000}" class="gray-bg-marker">
-                                <span th:text="${item.useMonth}"></span>
-                            </td>
-
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-            <!-- /.row -->
+        <div class="row">
+            <div id="map"></div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Место размещения</th>
+                        <th>Использование в мес.</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item, iterator : ${postamats}">
+                        <th scope="row" th:text="@{${iterator.index} + 1}"></th>
+                        <td>
+                            <span th:text="|${item.place} (${item.address})|"></span>
+                        </td>
+
+                        <td th:if="${item.useMonth > 10000}" class="red-bg-marker">
+                            <span th:text="${item.useMonth}"></span>
+                        </td>
+
+                        <td th:if="${item.useMonth < 2000}" class="green-bg-marker">
+                            <span th:text="${item.useMonth}"></span>
+                        </td>
+
+                        <td th:if="${item.useMonth >= 2000 && item.useMonth <= 10000}" class="gray-bg-marker">
+                            <span th:text="${item.useMonth}"></span>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- /.row -->
 
         <div class="row">
             <hr/>
@@ -74,6 +77,7 @@
 
 <!-- Bootstrap core JavaScript -->
 <div th:replace="inc/js.inc::js"></div>
+<script src="/static/default/js/postamat.js"></script>
 
 </body>
 
