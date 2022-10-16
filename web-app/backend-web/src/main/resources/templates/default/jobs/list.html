@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="inc/head.inc::head"></head>
+
+<body>
+
+<!-- Navigation -->
+<div th:replace="inc/top_nav.inc::top_nav"></div>
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-12 col-md-7 col-sm-6">
+                <h2>Генератор</h2>
+                <hr/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Параметры</th>
+                        <th>Создано</th>
+                        <th>Завершено</th>
+                        <th>Статус</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item, iterator : ${jobs}">
+                        <td>
+                            <span th:text="${item.id}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${item.params}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${item.createdAt}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${item.completedAt}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${item.status}"></span>
+                        </td>
+                        <td>
+                            <a th:href="|/jobs/map/${item.id}|">Посмотреть карту</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <hr/>
+        </div>
+
+        <a href="/jobs/create">Создать новый расчет</a>
+
+    </div>
+
+</div>
+<!-- /.container -->
+
+
+<!-- Footer -->
+<footer th:replace="inc/footer.inc::footer"></footer>
+
+<!-- Bootstrap core JavaScript -->
+<div th:replace="inc/js.inc::js"></div>
+
+</body>
+
+</html>
