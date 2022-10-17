@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="scheduling-kml-jobs-1" author="vivanov">
+        <createTable tableName="kml_jobs">
+            <column name="id" type="varchar(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="completed_at" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="params" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="result_kml" type="bytea">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <sql>
+            DROP MATERIALIZED VIEW IF EXISTS houses_geography;
+
+            CREATE MATERIALIZED VIEW houses_geography AS
+
+            SELECT id, address, square, ST_MakePoint(longitude, latitude)::geography as lonlat
+            FROM houses
+            WHERE latitude is not null and longitude is not null;
+
+            CREATE UNIQUE INDEX ON houses_geography (id);
+            CREATE INDEX latlon_spatial_index_houses_geography ON houses_geography USING GIST(lonlat);
+
+            REFRESH MATERIALIZED VIEW houses_geography;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
