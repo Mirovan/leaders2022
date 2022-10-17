@@ -32,29 +32,4 @@ public class IndexController {
         return modelAndView;
     }
 
-    @GetMapping("/kml")
-    @ResponseBody
-    public String kml() {
-        String kml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<kml xmlns=\"http://earth.google.com/kml/2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n" +
-                "    <Document>\n" +
-                "        <name>Moscow heatmap</name>\n" +
-                "        <Folder>\n" +
-                "            <name>Moscow heatmap 1</name>\n" +
-                "            <Placemark id=\"Москва Ленинградский 33\">\n" +
-                "              <name> г. Москва, пр-кт. Ленинградский, д. 33, к. 8</name>\n" +
-                "              <ExtendedData><Data name=\"area\"><value>2415.0</value></Data></ExtendedData>\n" +
-                "              <Point><coordinates>37.556659,55.788784,0</coordinates></Point>\n" +
-                "            </Placemark>\n" +
-                "            <Placemark id=\"Москва Металлургов 48\">\n" +
-                "              <name> г. Москва, ул. Металлургов, д. 48, к. 2</name>\n" +
-                "              <ExtendedData><Data name=\"area\"><value>5136.7</value></Data></ExtendedData>\n" +
-                "              <Point><coordinates>37.801087,55.760433,0</coordinates></Point>\n" +
-                "            </Placemark>\n" +
-                "        </Folder>\n" +
-                "    </Document>\n" +
-                "</kml>\n";
-        return kml;
-    }
-
 }
