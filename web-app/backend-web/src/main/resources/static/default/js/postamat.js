@@ -26,7 +26,8 @@ $(function () {
                     source: new ol.source.Vector({
                         projection: 'EPSG:4326',
                         features: [
-                            new ol.Feature(new ol.geom.Circle(centerLongitudeLatitude, 300))
+                            new ol.Feature(new ol.geom.Circle(centerLongitudeLatitude, 100)),
+                            new ol.Feature(new ol.geom.Circle(centerLongitudeLatitude, 500))
                         ]
                     }),
                     name: 'POSTAMAT',
@@ -37,7 +38,7 @@ $(function () {
                                 width: 2
                             }),
                             fill: new ol.style.Fill({
-                                color: 'rgba(0, 0, 255, 0.1)'
+                                color: 'rgba(0, 0, 255, 0.2)'
                             })
                         })
                     ]

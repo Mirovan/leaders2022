@@ -52,8 +52,8 @@ map.on('click', function (evt) {
                     data[item]["name"],
                     data[item]["address"],
                     data[item]["phone"],
-                    data[item]["lat"],
-                    data[item]["lon"]);
+                    data[item]["latitude"],
+                    data[item]["longitude"]);
 
                 var layer = createLayer('NEAREST_OBJECT', 'green', 200, data[item]["latitude"], data[item]["longitude"]);
                 map.addLayer(layer);
@@ -74,8 +74,8 @@ map.on('click', function (evt) {
                     data[item]["name"],
                     data[item]["address"],
                     data[item]["phone"],
-                    data[item]["lat"],
-                    data[item]["lon"]);
+                    data[item]["latitude"],
+                    data[item]["longitude"]);
 
                 var layer = createLayer('NEAREST_OBJECT', 'blue', 200, data[item]["latitude"], data[item]["longitude"]);
                 map.addLayer(layer);
