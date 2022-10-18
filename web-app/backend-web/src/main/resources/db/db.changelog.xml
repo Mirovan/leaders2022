@@ -9,6 +9,8 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
 
-    <includeAll path="db/changelog/"/>
+    <include file="db/changelog/migration-init.xml" />
+    <include file="db/changelog/migration-1-kml-jobs.xml" />
+    <include file="db/changelog/migration-2-supermarkets.xml" />
 
 </databaseChangeLog>
