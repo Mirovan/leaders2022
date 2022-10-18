@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainSupermarkets {
@@ -49,10 +50,10 @@ public class MainSupermarkets {
                 i++;
                 Files.writeString(output, "INSERT INTO supermarkets VALUES("
                         + i + ", "
-                        + "'" + line.getName() + "', "
-                        + "'" + line.getAddress() + "', "
-                        + "'" + line.getAbout() + "', "
-                        + "'" + line.getPhone() + "', "
+                        + "'" + escapeSingleQuote(line.getName()) + "', "
+                        + "'" + escapeSingleQuote(line.getAddress()) + "', "
+                        + "'" + escapeSingleQuote(line.getAbout()) + "', "
+                        + "'" + escapeSingleQuote(line.getPhone()) + "', "
                         + line.getLatitude() + ", "
                         + line.getLongitude() + ");"
                         + "\n", StandardOpenOption.APPEND);
@@ -60,5 +61,9 @@ public class MainSupermarkets {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static String escapeSingleQuote(String str) {
+        return str.replace("'", "''");
     }
 }

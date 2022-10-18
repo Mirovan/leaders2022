@@ -7,14 +7,16 @@ import ru.bigint.parser.supermarkets.model.Supermarket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class SupermarketParser {
     private static String host =
-            "https://data.mos.ru/api/rows/getresultwithcount?datasetId=3304&search=&sortField=Number&sortOrder=ASC&versionNumber=1&releaseNumber=159&pageNumber=";
+            "https://data.mos.ru/api/rows/getresultwithcount";
     //https://data.mos.ru/api/rows/getresultwithcount?datasetId=3304&search=&sortField=Number&sortOrder=ASC&versionNumber=1&releaseNumber=159&pageNumber=5
-    private static int pageNumber = 3001;
+    private static int pageNumber = 2001;
     private static int maxPageNumber = 6522;
 //    private static int maxPageNumber = 6522;
 
@@ -22,9 +24,19 @@ public class SupermarketParser {
 
         List<Supermarket> res = new ArrayList<>();
 
-        for (int i = pageNumber; i < maxPageNumber; i++) {
+        for (int i = pageNumber; i <= maxPageNumber; i++) {
             System.out.println(i);
-            String mainData = ParserHttpClient.sendGet(host + i, new HashMap<>());
+
+            Map<String, String> params = new LinkedHashMap<>();
+            params.put("datasetId", "3304");
+            params.put("search", "");
+            params.put("sortField", "Number");
+            params.put("sortOrder", "ASC");
+            params.put("versionNumber", "1");
+            params.put("releaseNumber", "159");
+            params.put("pageNumber", String.valueOf(i));
+
+            String mainData = ParserHttpClient.sendGet(host, params);
 
             JSONObject jsonData = new JSONObject(mainData);
             JSONArray arr = jsonData.getJSONArray("Result");
@@ -44,8 +56,8 @@ public class SupermarketParser {
                 supermarket.setPhone(phones.trim());
                 JSONArray coord = ((JSONObject) cells.get("geoData")).getJSONArray("coordinates");
                 if (coord != null && coord.length() >= 2) {
-                    supermarket.setLatitude(coord.get(0).toString());
-                    supermarket.setLongitude(coord.get(1).toString());
+                    supermarket.setLatitude(coord.get(1).toString());
+                    supermarket.setLongitude(coord.get(0).toString());
                 }
 
                 res.add(supermarket);
