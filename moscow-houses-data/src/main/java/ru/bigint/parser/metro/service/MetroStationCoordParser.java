@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class MetroStationCoordParser {
     private static String host = "http://api.positionstack.com/v1/forward";
@@ -38,41 +37,53 @@ public class MetroStationCoordParser {
             metroStation.setIncomingPassengers(Integer.parseInt(arr[1].trim()));
             metroStation.setOutgoingPassengers(Integer.parseInt(arr[2].trim()));
 
-            Map<String, String> params = new HashMap<>();
-            params.put("access_key", accessKey);
-            params.put("query", "Москва станция " + metroStation.getName());
-
-            String data = ParserHttpClient.sendGet(host, params);
-
-            CoordData coordData = null;
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                mapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
-                coordData = mapper.readValue(data, CoordData.class);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+            CoordItem coordItem = getCoord(metroStation, "Москва станция " + metroStation.getName());
+            if (coordItem == null) {
+                coordItem = getCoord(metroStation, "Москва метро " + metroStation.getName());
             }
 
-            if (!Objects.isNull(coordData) && !Objects.isNull(coordData.getData())) {
-                List<CoordItem> coords = coordData.getData().stream()
-                        .filter(item ->
-                                Objects.nonNull(item)
-                                        && item.getCountry().toLowerCase().contains("rus")
-                                        && item.getRegion().toLowerCase().contains("mos")
-                        ).toList();
-
-                if (!coords.isEmpty()) {
-                    CoordItem coordItem = coords.get(0);
-                    metroStation.setLatitude(coordItem.getLatitude());
-                    metroStation.setLongitude(coordItem.getLongitude());
-                }
+            if (coordItem != null) {
+                metroStation.setLatitude(coordItem.getLatitude());
+                metroStation.setLongitude(coordItem.getLongitude());
             }
 
             res.add(metroStation);
         }
 
         return res;
+    }
+
+    private static CoordItem getCoord(MetroStation metroStation, String query) {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_key", accessKey);
+        params.put("query", query);
+
+        String data = ParserHttpClient.sendGet(host, params);
+
+        CoordData coordData = null;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
+            coordData = mapper.readValue(data, CoordData.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        CoordItem coordItem = null;
+        if (!Objects.isNull(coordData) && !Objects.isNull(coordData.getData())) {
+            List<CoordItem> coords = coordData.getData().stream()
+                    .filter(item ->
+                            Objects.nonNull(item)
+                                    && item.getCountry().toLowerCase().contains("rus")
+                                    && item.getRegion().toLowerCase().contains("mos")
+                    ).toList();
+
+            if (!coords.isEmpty()) {
+                coordItem = coords.get(0);
+            }
+        }
+        return coordItem;
     }
 
 }
