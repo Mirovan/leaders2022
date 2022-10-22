@@ -22,7 +22,7 @@ public class PostamatServiceImpl implements PostamatService {
 
     @Override
     public Postamat getById(Integer id) {
-        return null;
+        return postamatRepo.findById(id).get();
     }
 
     @Override
