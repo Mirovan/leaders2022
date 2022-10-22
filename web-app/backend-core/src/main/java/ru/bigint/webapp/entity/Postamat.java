@@ -1,11 +1,16 @@
 package ru.bigint.webapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "postamats")
@@ -27,8 +32,11 @@ public class Postamat {
     @Column(name = "longitude")
     private Double longitude;
 
-    @Column(name = "use_month")
-    private Integer useMonth;
+    @OneToMany(mappedBy = "postamat",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonManagedReference
+    private List<PostamatUsing> postamatUsing;
 
     public Postamat() {
     }
@@ -73,11 +81,11 @@ public class Postamat {
         this.longitude = longitude;
     }
 
-    public Integer getUseMonth() {
-        return useMonth;
+    public List<PostamatUsing> getPostamatUsing() {
+        return postamatUsing;
     }
 
-    public void setUseMonth(Integer useMonth) {
-        this.useMonth = useMonth;
+    public void setPostamatUsing(List<PostamatUsing> postamatUsing) {
+        this.postamatUsing = postamatUsing;
     }
 }

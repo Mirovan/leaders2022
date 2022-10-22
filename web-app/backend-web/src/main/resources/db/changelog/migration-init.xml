@@ -68,8 +68,23 @@
             <column name="longitude" type="double">
                 <constraints nullable="true"/>
             </column>
-            <column name="use_month" type="double">
-                <constraints nullable="true"/>
+        </createTable>
+
+        <createTable tableName="postamat_using">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="postamat_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_postamat_id" references="postamats(id)"/>
+            </column>
+            <column name="year" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="month" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="use_count" type="int">
+                <constraints nullable="false"/>
             </column>
         </createTable>
 

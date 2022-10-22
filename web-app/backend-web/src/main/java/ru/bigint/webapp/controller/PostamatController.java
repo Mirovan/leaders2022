@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ru.bigint.webapp.entity.Postamat;
+import ru.bigint.webapp.entity.PostamatUsing;
 import ru.bigint.webapp.service.iface.PostamatService;
 
 import java.util.List;
@@ -47,12 +48,7 @@ public class PostamatController {
     @PostMapping("/save")
     @ResponseBody
     public Postamat savePostamat(@RequestBody Postamat postamat) {
-        postamat.setUseMonth(getRandomNumber(800, 20000));
         return postamatService.add(postamat);
     }
 
-    private int getRandomNumber(int min, int max) {
-        Random random = new Random();
-        return random.nextInt(max - min) + min;
-    }
 }

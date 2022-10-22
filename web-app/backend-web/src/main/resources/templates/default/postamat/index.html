@@ -21,42 +21,59 @@
         </div>
 
         <div class="row">
-            <div id="map"></div>
-        </div>
 
-        <div class="row">
+            <div class="col-sm-8">
+                <div id="map"></div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <h5>Установленные постаматы</h5>
+                    <hr/>
+                </div>
+                <div class="row">
+                    <table id="installed-postamats" class="table table-striped" style="font-size: 12px; ">
+                        <tr th:each="item, iterator : ${postamats}">
+                            <th scope="row" th:text="@{${iterator.index} + 1}"></th>
+                            <td>
+                                <span th:text="|${item.place} (${item.address})|"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
             <div class="col-lg-12">
 
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Место размещения</th>
-                        <th>Использование в мес.</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="item, iterator : ${postamats}">
-                        <th scope="row" th:text="@{${iterator.index} + 1}"></th>
-                        <td>
-                            <span th:text="|${item.place} (${item.address})|"></span>
-                        </td>
+                <!--                <table class="table table-striped">-->
+                <!--                    <thead>-->
+                <!--                    <tr>-->
+                <!--                        <th>#</th>-->
+                <!--                        <th>Место размещения</th>-->
+                <!--&lt;!&ndash;                        <th>Использование в мес.</th>&ndash;&gt;-->
+                <!--                    </tr>-->
+                <!--                    </thead>-->
+                <!--                    <tbody>-->
+                <!--                    <tr th:each="item, iterator : ${postamats}">-->
+                <!--                        <th scope="row" th:text="@{${iterator.index} + 1}"></th>-->
+                <!--                        <td>-->
+                <!--                            <span th:text="|${item.place} (${item.address})|"></span>-->
+                <!--                        </td>-->
 
-                        <td th:if="${item.useMonth > 10000}" class="red-bg-marker">
-                            <span th:text="${item.useMonth}"></span>
-                        </td>
+                <!--                        <td th:if="${item.useMonth > 10000}" class="red-bg-marker">-->
+                <!--                            <span th:text="${item.useMonth}"></span>-->
+                <!--                        </td>-->
 
-                        <td th:if="${item.useMonth < 2000}" class="green-bg-marker">
-                            <span th:text="${item.useMonth}"></span>
-                        </td>
+                <!--                        <td th:if="${item.useMonth < 2000}" class="green-bg-marker">-->
+                <!--                            <span th:text="${item.useMonth}"></span>-->
+                <!--                        </td>-->
 
-                        <td th:if="${item.useMonth >= 2000 && item.useMonth <= 10000}" class="gray-bg-marker">
-                            <span th:text="${item.useMonth}"></span>
-                        </td>
+                <!--                        <td th:if="${item.useMonth >= 2000 && item.useMonth <= 10000}" class="gray-bg-marker">-->
+                <!--                            <span th:text="${item.useMonth}"></span>-->
+                <!--                        </td>-->
 
-                    </tr>
-                    </tbody>
-                </table>
+                <!--                    </tr>-->
+                <!--                    </tbody>-->
+                <!--                </table>-->
 
             </div>
         </div>
