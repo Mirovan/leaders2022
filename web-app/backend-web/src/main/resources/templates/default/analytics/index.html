@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 
 <head th:replace="inc/head.inc::head"></head>
 
@@ -16,70 +16,47 @@
         <div class="row">
             <div class="col-lg-12 col-md-7 col-sm-6">
                 <h2>Статистика и данные для анализа</h2>
+                <hr/>
             </div>
         </div>
 
-        <div class="bs-docs-section">
-            <div class="row">
+        <div class="row">
 
-                <div class="col-sm-4">
-                    <div class="row">
-                        <h5>Установленные постаматы</h5>
-                        <hr/>
-                    </div>
-                    <div class="row">
-                        <table id="installed-postamats" class="table table-striped" style="font-size: 12px; ">
-                            <tr th:each="item, iterator : ${postamats}">
-                                <th scope="row" th:text="@{${iterator.index} + 1}"></th>
-                                <td>
-                                    <span th:text="|${item.place} (${item.address})|"></span>
-                                </td>
-                                <td>
-                                    <button class="btn btn-outline-primary btn-sm" th:attr="onclick=|getStat('${item.id}')|">Статистика</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <h5>Установленные постаматы</h5>
+                    <hr/>
                 </div>
-
-                <div class="col-sm-8">
-                    <canvas id="myChart" width="400" height="200"></canvas>
+                <div class="row">
+                    <table id="installed-postamats" class="table table-striped" style="font-size: 12px; ">
+                        <tr th:each="item, iterator : ${postamats}">
+                            <th scope="row" th:text="@{${iterator.index} + 1}"></th>
+                            <td>
+                                <span th:text="|${item.place} (${item.address})|"></span>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm"
+                                        th:attr="onclick=|getStat('${item.id}')|">Статистика
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-
-<!--                    <table class="table table-striped">-->
-<!--                        <thead>-->
-<!--                        <tr>-->
-<!--                            <th>#</th>-->
-<!--                            <th>Место размещения</th>-->
-<!--                            <th>Использование в мес.</th>-->
-<!--                        </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody>-->
-<!--                        <tr th:each="item, iterator : ${postamats}">-->
-<!--                            <th scope="row" th:text="@{${iterator.index} + 1}"></th>-->
-<!--                            <td>-->
-<!--                                <span th:text="|${item.placeName} (${item.address})|"></span>-->
-<!--                            </td>-->
-
-<!--                            <td th:if="${item.useMonth > 10000}" class="red-bg-marker">-->
-<!--                                <span th:text="${item.useMonth}"></span>-->
-<!--                            </td>-->
-
-<!--                            <td th:if="${item.useMonth < 2000}" class="green-bg-marker">-->
-<!--                                <span th:text="${item.useMonth}"></span>-->
-<!--                            </td>-->
-
-<!--                            <td th:if="${item.useMonth >= 2000 && item.useMonth <= 10000}" class="gray-bg-marker">-->
-<!--                                <span th:text="${item.useMonth}"></span>-->
-<!--                            </td>-->
-
-<!--                        </tr>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
-
             </div>
-            <!-- /.row -->
+
+            <div class="col-sm-1"></div>
+
+            <div class="col-sm-7">
+                <div class="row">
+                    <h5>Статистика постамата</h5>
+                    <hr/>
+                </div>
+                <canvas id="myChart" width="400" height="200"></canvas>
+            </div>
+
         </div>
+        <!-- /.row -->
+
 
         <div class="row">
             <hr/>
@@ -111,15 +88,17 @@
                 id: postamatId
             },
             contentType: "application/json; charset=utf-8",
-            success: function(response){
+            success: function (response) {
                 chart.destroy();
 
                 var arr = response.postamatUsing;
                 console.log(arr);
-                var labels = arr.map(function(item) {
-                    return item.month;
+                var labels = arr.map(function (item) {
+                    var labelStr = item.month + "." + item.year;
+                    if (item.month < 10) labelStr = "0" + labelStr;
+                    return labelStr;
                 });
-                var data = arr.map(function(item) {
+                var data = arr.map(function (item) {
                     return item.useCount;
                 });
 
@@ -128,7 +107,7 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'Использование постамата',
+                            label: 'Использование постамата по месяцам',
                             data: data,
                             backgroundColor: 'rgba(0, 119, 204, 0.3)'
                         }]
