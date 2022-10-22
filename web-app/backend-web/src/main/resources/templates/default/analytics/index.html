@@ -15,46 +15,68 @@
     <div class="page-header" id="banner">
         <div class="row">
             <div class="col-lg-12 col-md-7 col-sm-6">
-                <h2>Постаматы</h2>
+                <h2>Статистика и данные для анализа</h2>
             </div>
         </div>
 
         <div class="bs-docs-section">
             <div class="row">
-                <div class="col-lg-12">
 
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Место размещения</th>
-                            <th>Использование в мес.</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="item, iterator : ${postamats}">
-                            <th scope="row" th:text="@{${iterator.index} + 1}"></th>
-                            <td>
-                                <span th:text="|${item.placeName} (${item.address})|"></span>
-                            </td>
-
-                            <td th:if="${item.useMonth > 10000}" class="red-bg-marker">
-                                <span th:text="${item.useMonth}"></span>
-                            </td>
-
-                            <td th:if="${item.useMonth < 2000}" class="green-bg-marker">
-                                <span th:text="${item.useMonth}"></span>
-                            </td>
-
-                            <td th:if="${item.useMonth >= 2000 && item.useMonth <= 10000}" class="gray-bg-marker">
-                                <span th:text="${item.useMonth}"></span>
-                            </td>
-
-                        </tr>
-                        </tbody>
-                    </table>
-
+                <div class="col-sm-4">
+                    <div class="row">
+                        <h5>Установленные постаматы</h5>
+                        <hr/>
+                    </div>
+                    <div class="row">
+                        <table id="installed-postamats" class="table table-striped" style="font-size: 12px; ">
+                            <tr th:each="item, iterator : ${postamats}">
+                                <th scope="row" th:text="@{${iterator.index} + 1}"></th>
+                                <td>
+                                    <span th:text="|${item.place} (${item.address})|"></span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="getStat('')">Статистика</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
+
+                <div class="col-sm-8">
+                    <div id="chartContainer" class="dialog" style="height: 370px; width: 100%;"></div>
+                </div>
+
+<!--                    <table class="table table-striped">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th>#</th>-->
+<!--                            <th>Место размещения</th>-->
+<!--                            <th>Использование в мес.</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <tr th:each="item, iterator : ${postamats}">-->
+<!--                            <th scope="row" th:text="@{${iterator.index} + 1}"></th>-->
+<!--                            <td>-->
+<!--                                <span th:text="|${item.placeName} (${item.address})|"></span>-->
+<!--                            </td>-->
+
+<!--                            <td th:if="${item.useMonth > 10000}" class="red-bg-marker">-->
+<!--                                <span th:text="${item.useMonth}"></span>-->
+<!--                            </td>-->
+
+<!--                            <td th:if="${item.useMonth < 2000}" class="green-bg-marker">-->
+<!--                                <span th:text="${item.useMonth}"></span>-->
+<!--                            </td>-->
+
+<!--                            <td th:if="${item.useMonth >= 2000 && item.useMonth <= 10000}" class="gray-bg-marker">-->
+<!--                                <span th:text="${item.useMonth}"></span>-->
+<!--                            </td>-->
+
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+
             </div>
             <!-- /.row -->
         </div>
@@ -74,6 +96,68 @@
 
 <!-- Bootstrap core JavaScript -->
 <div th:replace="inc/js.inc::js"></div>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script>
+
+    window.onload = function () {
+
+        var options = {
+            animationEnabled: true,
+            title: {
+                text: "GDP Growth Rate - 2016"
+            },
+            axisY: {
+                title: "Growth Rate (in %)",
+                suffix: "%"
+            },
+            axisX: {
+                title: "Countries"
+            },
+            data: [{
+                type: "column",
+                yValueFormatString: "#,##0.0#"%"",
+                dataPoints: [
+                    { label: "Iraq", y: 10.09 },
+                    { label: "T & C Islands", y: 9.40 },
+                    { label: "Nauru", y: 8.50 },
+                    { label: "Ethiopia", y: 7.96 },
+                    { label: "Uzbekistan", y: 7.80 },
+                    { label: "Nepal", y: 7.56 },
+                    { label: "Iceland", y: 7.20 }
+                ]
+            }]
+        };
+
+        showChart(options);
+        // $("#showChart").click(function() {
+        //     showChart();
+        // });
+
+    }
+
+    function showChart(options) {
+        $("#chartContainer").CanvasJSChart(options);
+    }
+</script>
+<style>
+    #showChart{
+        background-color: #5bb85b;
+        color: #ffffff;
+        padding: 10px;
+        border: 0px;
+        border-radius: 8px;
+        font-size: 18px;
+        outline: none;
+        cursor: pointer;
+    }
+    #container{
+        position: fixed;
+        top: 50%;
+        width:100%;
+        text-align: center;
+        margin-top: -41px;
+    }
+</style>
 
 </body>
 
