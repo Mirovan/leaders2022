@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="col-sm-8">
-                    <div id="chartContainer" class="dialog" style="height: 370px; width: 100%;"></div>
+                    <canvas id="myChart" width="400" height="200"></canvas>
                 </div>
 
 <!--                    <table class="table table-striped">-->
@@ -96,68 +96,45 @@
 
 <!-- Bootstrap core JavaScript -->
 <div th:replace="inc/js.inc::js"></div>
-<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script>
-
-    window.onload = function () {
-
-        var options = {
-            animationEnabled: true,
-            title: {
-                text: "GDP Growth Rate - 2016"
-            },
-            axisY: {
-                title: "Growth Rate (in %)",
-                suffix: "%"
-            },
-            axisX: {
-                title: "Countries"
-            },
-            data: [{
-                type: "column",
-                yValueFormatString: "#,##0.0#"%"",
-                dataPoints: [
-                    { label: "Iraq", y: 10.09 },
-                    { label: "T & C Islands", y: 9.40 },
-                    { label: "Nauru", y: 8.50 },
-                    { label: "Ethiopia", y: 7.96 },
-                    { label: "Uzbekistan", y: 7.80 },
-                    { label: "Nepal", y: 7.56 },
-                    { label: "Iceland", y: 7.20 }
-                ]
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
             }]
-        };
-
-        showChart(options);
-        // $("#showChart").click(function() {
-        //     showChart();
-        // });
-
-    }
-
-    function showChart(options) {
-        $("#chartContainer").CanvasJSChart(options);
-    }
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 </script>
-<style>
-    #showChart{
-        background-color: #5bb85b;
-        color: #ffffff;
-        padding: 10px;
-        border: 0px;
-        border-radius: 8px;
-        font-size: 18px;
-        outline: none;
-        cursor: pointer;
-    }
-    #container{
-        position: fixed;
-        top: 50%;
-        width:100%;
-        text-align: center;
-        margin-top: -41px;
-    }
-</style>
 
 </body>
 
