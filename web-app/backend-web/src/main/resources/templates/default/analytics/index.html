@@ -100,6 +100,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script>
     const ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, null);
 
     //Получение статистики использования постамата
     function getStat(postamatId) {
@@ -111,6 +112,8 @@
             },
             contentType: "application/json; charset=utf-8",
             success: function(response){
+                chart.destroy();
+
                 var arr = response.postamatUsing;
                 console.log(arr);
                 var labels = arr.map(function(item) {
@@ -125,13 +128,14 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'Graph Line',
+                            label: 'Использование постамата',
                             data: data,
                             backgroundColor: 'rgba(0, 119, 204, 0.3)'
                         }]
                     }
                 };
-                var chart = new Chart(ctx, config);
+
+                chart = new Chart(ctx, config);
             }
         });
     }
