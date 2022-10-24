@@ -20,12 +20,12 @@ public class KmlController {
         this.kmlJobService = kmlJobService;
     }
 
-    @GetMapping("/jobs/{id}.kml")
+    @GetMapping("/jobs/{id}.txt")
     @ResponseBody
     public ResponseEntity<byte[]> kml(@PathVariable String id) {
         byte[] result = kmlJobService.getKmlResultById(id);
         return ResponseEntity.ok()
-                .header("Content-Type", "application/vnd.google-earth.kml+xml")
+                .header("Content-Type", "text/plain")
                 .body(result);
     }
 

@@ -83,22 +83,10 @@ public class KMLGeneratorJob {
                 }).toList();
         double max = points.stream().max(Comparator.comparing(HeatmapPoint::getValue)).map(HeatmapPoint::getValue).orElse(1d);
         StringBuilder sb = new StringBuilder();
-        sb.append("""
-                <?xml version="1.0" encoding="UTF-8"?>
-                <kml xmlns="http://earth.google.com/kml/2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-                <Document><name>Moscow heatmap</name><Folder><name>Moscow heatmap %s</name>
-                                """.formatted(job.getId()));
         for (HeatmapPoint point : points) {
             double value = point.getValue() / max;
-            sb.append(String.format(Locale.US, """
-                    <Placemark id="%s">
-                    <name>%s</name>
-                    <ExtendedData><Data name="area"><value>%.2f</value></Data></ExtendedData>
-                    <Point><coordinates>%.6f,%.6f,0</coordinates></Point>
-                    </Placemark>
-                    """, point.getId(), point.getAddress(), value, point.getLon(), point.getLat()));
+            sb.append(String.format(Locale.US, "%s %.2f %.6f %.6f", point.getId(), value, point.getLon(), point.getLat()) + System.lineSeparator());
         }
-        sb.append("</Folder></Document></kml>");
         return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 
