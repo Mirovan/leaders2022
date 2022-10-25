@@ -141,7 +141,10 @@ function getInsertPostamatRow(name, address, phone, lat, lon) {
 
 
 function calcMap() {
-    $.get("/api/calc", {})
+    let radius = document.querySelector("#radius-input").value;
+    let heatMapUUID = document.querySelector("#heatmap-select").value;
+
+    $.get("/api/calc", {radius: radius, kmlId: heatMapUUID})
         .done(function (data) {
             clearMap('SECTOR_OBJECT');
             clearMap('HEATMAP');
@@ -162,7 +165,8 @@ function calcMap() {
 }
 
 function loadKml() {
-    $.get("/api/jobs/fad2e20b-f3d1-431d-b5ba-e020986f847a.txt", {})
+    let heatMapUUID = document.querySelector("#heatmap-select").value;
+    $.get("/api/jobs/" + heatMapUUID + ".txt")
         .done(function (data) {
             let layer = createHeatMap(data);
             map.addLayer(layer);

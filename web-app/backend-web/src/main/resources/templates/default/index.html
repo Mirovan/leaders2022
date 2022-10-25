@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 
 <head th:replace="inc/head.inc::head"></head>
 
@@ -29,16 +29,25 @@
                     <h5>Построить сегменты</h5>
                     <hr/>
                 </div>
-                <div class="row">
-                    <div class="input-group input-group-sm mb-3">
-                        <span class="input-group-text" id="inputGroup-sizing-sm">Радиус</span>
-                        <input type="text" name="radius" value="400" class="form-control"
-                               aria-describedby="inputGroup-sizing-sm">
-                    </div>
+                <div class="container" style="margin: 0 0 0 -15px;">
+                        <div class="form-group row">
+                            <label for="radius-input" class="col-sm-2 col-form-label-sm" style="margin: 0 0 0 -15px;">Радиус</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="radius-input" value="400" class="form-control form-control-sm"
+                                       placeholder="col-form-label-sm">
+                            </div>
+                        </div>
 
-                    <br/> <br/>
+                        <div class="form-group row">
+                            <select id="heatmap-select" class="form-control form-control-sm">
+                                <option selected="selected"> - Тепловая карта - </option>
+                                <option th:each="item: ${heatMaps}" th:value="${item.id}" th:text="${item.params}"></option>
+                            </select>
+                        </div>
 
-                    <button class="btn-primary btn-sm" onclick="calcMap();">Построить сегменты</button>
+                        <div class="form-group row">
+                            <button class="btn-primary btn-sm" onclick="calcMap();">Построить сегменты</button>
+                        </div>
                 </div>
 
                 <div class="row">

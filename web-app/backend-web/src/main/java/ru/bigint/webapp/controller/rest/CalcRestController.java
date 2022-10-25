@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bigint.webapp.dto.CalcPointDto;
 import ru.bigint.webapp.service.iface.CalcService;
@@ -24,8 +25,10 @@ public class CalcRestController {
     }
 
     @GetMapping()
-    public List<CalcPointDto> calculate() {
-        return calcService.calculate(200, "fad2e20b-f3d1-431d-b5ba-e020986f847a");
+    public List<CalcPointDto> calculate(
+            @RequestParam(value = "radius", required = false) Integer radius,
+            @RequestParam(value = "kmlId", required = false) String kmlId) {
+        return calcService.calculate(radius, kmlId);
     }
 
 }
