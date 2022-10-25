@@ -16,7 +16,7 @@ public interface MallRepo extends JpaRepository<Mall, Integer> {
 
     @Query(nativeQuery = true,
             value = "SELECT malls.id, malls.name, malls.address, malls.about, malls.phone, malls.latitude, malls.longitude, ST_Distance( " +
-                    "  ST_MakePoint(malls.latitude, malls.longitude), ST_MakePoint(:#{#point.lalitude}, :#{#point.longitude}) " +
+                    "  ST_MakePoint(malls.latitude, malls.longitude), ST_MakePoint(:#{#point.latitude}, :#{#point.longitude}) " +
                     "  ) AS dist " +
                     " FROM " +
                     "  malls " +

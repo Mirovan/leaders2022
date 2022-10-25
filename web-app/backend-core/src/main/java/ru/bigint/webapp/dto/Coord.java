@@ -1,20 +1,20 @@
 package ru.bigint.webapp.dto;
 
 public class Coord {
-    private Double lalitude;
+    private Double latitude;
     private Double longitude;
 
-    public Coord(Double lalitude, Double longitude) {
-        this.lalitude = lalitude;
+    public Coord(Double latitude, Double longitude) {
+        this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public Double getLalitude() {
-        return lalitude;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setLalitude(Double lalitude) {
-        this.lalitude = lalitude;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     public Double getLongitude() {

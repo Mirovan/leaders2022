@@ -55,7 +55,7 @@ map.on('click', function (evt) {
                     data[item]["latitude"],
                     data[item]["longitude"]);
 
-                var layer = createLayer('NEAREST_OBJECT', 'green', 200, data[item]["latitude"], data[item]["longitude"]);
+                var layer = createLayer('NEAREST_OBJECT', 'green', 2, 100, data[item]["latitude"], data[item]["longitude"]);
                 map.addLayer(layer);
             }
 
@@ -77,7 +77,7 @@ map.on('click', function (evt) {
                     data[item]["latitude"],
                     data[item]["longitude"]);
 
-                var layer = createLayer('NEAREST_OBJECT', 'blue', 200, data[item]["latitude"], data[item]["longitude"]);
+                var layer = createLayer('NEAREST_OBJECT', 'blue', 2, 100, data[item]["latitude"], data[item]["longitude"]);
                 map.addLayer(layer);
             }
 
@@ -107,7 +107,7 @@ function clearMap(layerName) {
         .forEach(layer => map.removeLayer(layer));
 }
 
-function createLayer(layerName, color, square, lat, lon) {
+function createLayer(layerName, color, width, square, lat, lon) {
     //Рисуем точки на карте - ближайшие объекты к нажатой точке
     var centerLongitudeLatitude = ol.proj.fromLonLat([
         lon, lat
@@ -125,7 +125,7 @@ function createLayer(layerName, color, square, lat, lon) {
             new ol.style.Style({
                 stroke: new ol.style.Stroke({
                     color: color,
-                    width: 2
+                    width: width
                 }),
                 fill: new ol.style.Fill({
                     color: 'rgba(0, 0, 255, 0.1)'
@@ -150,4 +150,23 @@ function getInsertPostamatRow(name, address, phone, lat, lon) {
         ")\">Установить</button></td>"
     "</tr>";
     return res;
+}
+
+
+function calcMap() {
+    $.get("/api/calc", {})
+        .done(function (data) {
+
+            for (let i=0; i<400; i++) {
+                var layer = createLayer(
+                    'SECTOR_OBJECT',
+                    '#9293a5',
+                    1,
+                    400,
+                    data[i]["point"]["latitude"],
+                    data[i]["point"]["longitude"]);
+                map.addLayer(layer);
+            }
+
+        });
 }

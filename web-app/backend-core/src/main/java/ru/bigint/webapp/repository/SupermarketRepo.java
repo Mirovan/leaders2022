@@ -16,7 +16,7 @@ public interface SupermarketRepo extends JpaRepository<Supermarket, Integer> {
 
     @Query(nativeQuery = true,
             value = "SELECT supermarkets.id, supermarkets.name, supermarkets.address, supermarkets.about, supermarkets.phone, supermarkets.latitude, supermarkets.longitude, ST_Distance( " +
-                    "  ST_MakePoint(supermarkets.latitude, supermarkets.longitude), ST_MakePoint(:#{#point.lalitude}, :#{#point.longitude}) " +
+                    "  ST_MakePoint(supermarkets.latitude, supermarkets.longitude), ST_MakePoint(:#{#point.latitude}, :#{#point.longitude}) " +
                     "  ) AS dist " +
                     " FROM " +
                     "  supermarkets " +
