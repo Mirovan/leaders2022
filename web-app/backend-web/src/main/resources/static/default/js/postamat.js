@@ -15,7 +15,7 @@ const map = new ol.Map({
 
 $(function () {
 
-    $.get("/postamats/list")
+    $.get("/api/postamats/list")
         .done(function (data) {
             for (let item in data) {
                 //Рисуем точки на карте - установленные постаматы

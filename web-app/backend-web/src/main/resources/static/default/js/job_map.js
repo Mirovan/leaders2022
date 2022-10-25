@@ -1,5 +1,5 @@
 $(function() {
-    $.get("/jobs/" + $("#job_id").text() + ".txt", function(txt) {
+    $.get("/api/jobs/" + $("#job_id").text() + ".txt", function(txt) {
         const lines = txt.split("\n");
         features = [];
         for (const l of lines) {

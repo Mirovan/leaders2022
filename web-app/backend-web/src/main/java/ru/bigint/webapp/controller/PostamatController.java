@@ -39,16 +39,4 @@ public class PostamatController {
         return modelAndView;
     }
 
-    @GetMapping("/list")
-    @ResponseBody
-    public List<Postamat> getAllPostamatsList() {
-        return postamatService.getAll();
-    }
-
-    @PostMapping("/save")
-    @ResponseBody
-    public Postamat savePostamat(@RequestBody Postamat postamat) {
-        return postamatService.add(postamat);
-    }
-
 }

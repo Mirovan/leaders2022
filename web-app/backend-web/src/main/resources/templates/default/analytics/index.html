@@ -82,7 +82,7 @@
     //Получение статистики использования постамата
     function getStat(postamatId) {
         jQuery.ajax({
-            url: "/analytics/postamat/using",
+            url: "/api/analytics/postamat/using",
             type: "GET",
             data: {
                 id: postamatId

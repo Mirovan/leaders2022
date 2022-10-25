@@ -41,7 +41,7 @@ map.on('click', function (evt) {
     //очистка списка
     document.querySelector("#nearest-objects").innerHTML = "";
 
-    $.get("/malls/nearest", {latitude: lat, longitude: lon})
+    $.get("/api/malls/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
             let tableData = "<tr><th colspan='3'>Торговый центры</th></tr>";
 
@@ -63,7 +63,7 @@ map.on('click', function (evt) {
         });
 
 
-    $.get("/supermarkets/nearest", {latitude: lat, longitude: lon})
+    $.get("/api/supermarkets/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
             let tableData = "<tr><th colspan='3'>Супермаркеты</th></tr>";
 
@@ -89,7 +89,7 @@ map.on('click', function (evt) {
 //Сохранение постамата
 function savePostamat(place, address, latitude, longitude) {
     jQuery.ajax({
-        url: "/postamats/save",
+        url: "/api/postamats/save",
         type: "POST",
         data: JSON.stringify({place: place, address: address, latitude: latitude, longitude: longitude}),
         dataType: "json",

@@ -1,4 +1,4 @@
-package ru.bigint.webapp.controller;
+package ru.bigint.webapp.controller.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +11,12 @@ import ru.bigint.webapp.service.iface.MallService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/malls")
-public class MallController {
+@RequestMapping(value = "/api/malls")
+public class MallRestController {
 
     private final MallService mallService;
 
-    public MallController(MallService mallService) {
+    public MallRestController(MallService mallService) {
         this.mallService = mallService;
     }
 

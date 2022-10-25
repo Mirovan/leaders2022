@@ -20,15 +20,6 @@ public class KmlController {
         this.kmlJobService = kmlJobService;
     }
 
-    @GetMapping("/jobs/{id}.txt")
-    @ResponseBody
-    public ResponseEntity<byte[]> kml(@PathVariable String id) {
-        byte[] result = kmlJobService.getKmlResultById(id);
-        return ResponseEntity.ok()
-                .header("Content-Type", "text/plain")
-                .body(result);
-    }
-
     @GetMapping("/jobs/map/{id}")
     public ModelAndView showMap(@PathVariable String id) {
         ModelAndView modelAndView = new ModelAndView();
