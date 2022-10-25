@@ -13,7 +13,6 @@ const map = new ol.Map({
 });
 
 
-
 //Нажатие на карту
 map.on('click', function (evt) {
     clearMap('NEAREST_OBJECT');
@@ -171,4 +170,22 @@ function loadKml() {
             let layer = createHeatMap(data);
             map.addLayer(layer);
         });
+}
+
+function showHexMap() {
+    document.querySelector("#hexMap").onchange = (e) => {
+        let checked = e.target.checked;
+        if (checked) {
+            var grid = new ol.HexGrid ({ size:600, origin: map.getView().getCenter() });
+            var hex = new ol.source.HexMap({ hexGrid: grid });
+            map.addLayer (
+                new ol.layer.Image({
+                    source: hex,
+                    name: 'HEXMAP'
+                })
+            );
+        } else {
+            clearMap('HEXMAP');
+        }
+    }
 }
