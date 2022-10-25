@@ -5,20 +5,6 @@ const map = new ol.Map({
         new ol.layer.Tile({
             source: new ol.source.OSM()
         }),
-        // new ol.layer.Heatmap({
-        //     source: new ol.source.Vector({
-        //         url: '/kml',
-        //         format: new ol.format.KML({
-        //             extractStyles: false,
-        //         }),
-        //     }),
-        //     blur: parseInt(10),
-        //     radius: parseInt(10),
-        //     weight: function (feature) {
-        //         const area = parseFloat(feature.get('area')) / 10000;
-        //         return area;
-        //     },
-        // })
     ],
     view: new ol.View({
         center: ol.proj.transform([37.646930, 55.725146], 'EPSG:4326', 'EPSG:3857'),
@@ -131,7 +117,8 @@ function createLayer(layerName, color, width, square, lat, lon) {
                     color: 'rgba(0, 0, 255, 0.1)'
                 })
             })
-        ]
+        ],
+        zIndex: 100
     });
 }
 
@@ -156,9 +143,11 @@ function getInsertPostamatRow(name, address, phone, lat, lon) {
 function calcMap() {
     $.get("/api/calc", {})
         .done(function (data) {
+            clearMap('SECTOR_OBJECT');
+            clearMap('HEATMAP');
 
             for (let i=0; i<400; i++) {
-                var layer = createLayer(
+                let layer = createLayer(
                     'SECTOR_OBJECT',
                     '#9293a5',
                     1,
@@ -168,5 +157,14 @@ function calcMap() {
                 map.addLayer(layer);
             }
 
+            loadKml();
+        });
+}
+
+function loadKml() {
+    $.get("/api/jobs/fad2e20b-f3d1-431d-b5ba-e020986f847a.txt", {})
+        .done(function (data) {
+            let layer = createHeatMap(data);
+            map.addLayer(layer);
         });
 }

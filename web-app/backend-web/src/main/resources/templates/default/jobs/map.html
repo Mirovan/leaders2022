@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 
 <head th:replace="inc/head.inc::head"></head>
 
@@ -36,6 +36,14 @@
 <!-- Bootstrap core JavaScript -->
 <div th:replace="inc/js.inc::js"></div>
 <script src="/static/default/js/job_map.js"></script>
+<script>
+    $(function () {
+        $.get("/api/jobs/" + $("#job_id").text() + ".txt")
+            .done(function (data) {
+                loadMap(data);
+            });
+    });
+</script>
 
 </body>
 

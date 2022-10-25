@@ -27,15 +27,23 @@
             <div class="col-sm-4">
                 <div class="row">
                     <h5>Построить сегменты</h5>
-                    <hr />
+                    <hr/>
                 </div>
                 <div class="row">
+                    <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Радиус</span>
+                        <input type="text" name="radius" value="400" class="form-control"
+                               aria-describedby="inputGroup-sizing-sm">
+                    </div>
+
+                    <br/> <br/>
+
                     <button class="btn-primary btn-sm" onclick="calcMap();">Построить сегменты</button>
                 </div>
 
                 <div class="row">
                     <h5>Варианты размещения постамата</h5>
-                    <hr />
+                    <hr/>
                 </div>
                 <div class="row">
                     <table id="nearest-objects" class="table table-striped" style="font-size: 12px; ">
@@ -59,6 +67,7 @@
 <!-- Bootstrap core JavaScript -->
 <div th:replace="inc/js.inc::js"></div>
 <script src="/static/default/js/expert.js"></script>
+<script src="/static/default/js/job_map.js"></script>
 
 </body>
 
