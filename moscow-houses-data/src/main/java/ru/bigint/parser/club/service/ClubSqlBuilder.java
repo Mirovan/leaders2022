@@ -1,8 +1,8 @@
-package ru.bigint.parser.library.service;
+package ru.bigint.parser.club.service;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import ru.bigint.parser.library.model.Library;
+import ru.bigint.parser.club.model.Club;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class LubrarySqlBuilder {
+public class ClubSqlBuilder {
 
-    public static List<Library> create() {
-        List<Library> res = new ArrayList<>();
+    public static List<Club> create() {
+        List<Club> res = new ArrayList<>();
 
         String data = null;
         try {
-            data = new String(Files.readAllBytes(Paths.get("C:/JavaProject/leaders2022/moscow-houses-data/data/library-data/data.json")));
+            data = new String(Files.readAllBytes(Paths.get("C:/JavaProject/leaders2022/moscow-houses-data/data/club-data/data.json")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,14 +31,14 @@ public class LubrarySqlBuilder {
             int addressSize = item.getJSONArray("ObjectAddress").length();
 
             for (int j = 0; j < addressSize; j++) {
-                Library library = new Library();
+                Club club = new Club();
 
-                library.setName(item.getString("CommonName"));
+                club.setName(item.getString("CommonName"));
 
                 JSONArray objectAddressArr = item.getJSONArray("ObjectAddress");
-                library.setDistrict(((JSONObject) objectAddressArr.get(j)).getString("District"));
-                library.setAdmArea(((JSONObject) objectAddressArr.get(j)).getString("AdmArea"));
-                library.setAddress(
+                club.setDistrict(((JSONObject) objectAddressArr.get(j)).getString("District"));
+                club.setAdmArea(((JSONObject) objectAddressArr.get(j)).getString("AdmArea"));
+                club.setAddress(
                         ((JSONObject) objectAddressArr.get(j)).getString("Address")
                                 .replace("Российская Федерация, город Москва,", "")
                                 .replace("город Москва,", "")
@@ -51,22 +51,15 @@ public class LubrarySqlBuilder {
                     String phone = ((JSONObject) phoneArr.get(k)).getString("PublicPhone");
                     if (!Objects.isNull(phone)) phones += phone + ", ";
                 }
-                library.setPhone(phones.trim());
+                club.setPhone(phones.trim());
 
                 JSONArray coord = (JSONArray) ((JSONObject) item.get("geoData")).getJSONArray("coordinates").get(j);
                 if (coord != null && coord.length() >= 2) {
-                    library.setLatitude(coord.get(1).toString());
-                    library.setLongitude(coord.get(0).toString());
+                    club.setLatitude(coord.get(1).toString());
+                    club.setLongitude(coord.get(0).toString());
                 }
 
-                if (item.has("NumOfVisitors")) {
-                    library.setNumOfVisitors(item.getInt("NumOfVisitors"));
-                } else {
-                    library.setNumOfVisitors(0);
-
-                }
-
-                res.add(library);
+                res.add(club);
             }
         }
 

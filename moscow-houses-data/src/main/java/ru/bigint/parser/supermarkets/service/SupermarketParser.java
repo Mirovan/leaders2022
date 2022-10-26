@@ -51,7 +51,7 @@ public class SupermarketParser {
                 String phones = "";
                 for (int k = 0; k < phoneArr.length(); k++) {
                     String phone = ((JSONObject) phoneArr.get(k)).getString("PublicPhone");
-                    if (!Objects.isNull(phone)) phones += phone + " ";
+                    if (!Objects.isNull(phone)) phones += phone + ", ";
                 }
                 supermarket.setPhone(phones.trim());
                 JSONArray coord = ((JSONObject) cells.get("geoData")).getJSONArray("coordinates");

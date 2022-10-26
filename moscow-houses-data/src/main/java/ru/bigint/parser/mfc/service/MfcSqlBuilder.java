@@ -42,7 +42,7 @@ public class MfcSqlBuilder {
             String phones = "";
             for (int k = 0; k < phoneArr.length(); k++) {
                 String phone = ((JSONObject) phoneArr.get(k)).getString("PublicPhone");
-                if (!Objects.isNull(phone)) phones += phone + " ";
+                if (!Objects.isNull(phone)) phones += phone + ", ";
             }
             mfc.setPhone(phones.trim());
 
