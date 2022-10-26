@@ -13,5 +13,6 @@
     <include file="db/changelog/migration-1-kml-jobs.xml" />
     <include file="db/changelog/migration-2-supermarkets.xml" />
     <include file="db/changelog/migration-3-metro.xml" />
+    <include file="db/changelog/migration-4-other-government-objects.xml" />
 
 </databaseChangeLog>

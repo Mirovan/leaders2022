@@ -23,7 +23,6 @@
             <column name="outcome" type="int(7)">
                 <constraints nullable="true"/>
             </column>
-
             <column name="latitude" type="double">
                 <constraints nullable="true"/>
             </column>
