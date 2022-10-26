@@ -71,7 +71,9 @@ map.on('click', function (evt) {
 });
 
 
-//Сохранение постамата
+/**
+ * Сохранение постамата
+ */
 function savePostamat(place, address, latitude, longitude) {
     jQuery.ajax({
         url: "/api/postamats/save",
@@ -86,12 +88,19 @@ function savePostamat(place, address, latitude, longitude) {
 }
 
 
+/**
+ * Очистка/удаление слоя с карты по имени
+ * */
 function clearMap(layerName) {
     map.getLayers().getArray()
         .filter(layer => layer.get('name') === layerName)
         .forEach(layer => map.removeLayer(layer));
 }
 
+
+/**
+ * Создание слоя карты
+ * */
 function createLayer(layerName, color, width, square, lat, lon) {
     //Рисуем точки на карте - ближайшие объекты к нажатой точке
     var centerLongitudeLatitude = ol.proj.fromLonLat([
@@ -139,6 +148,9 @@ function getInsertPostamatRow(name, address, phone, lat, lon) {
 }
 
 
+/**
+ * Расчет и вывод оптимальных секторов для установки постаматов
+ * */
 function calcMap() {
     let radius = document.querySelector("#radius-input").value;
     let heatMapUUID = document.querySelector("#heatmap-select").value;
@@ -163,6 +175,10 @@ function calcMap() {
         });
 }
 
+
+/**
+ * Загрузить слой карты - тепловую карту
+ * */
 function loadKml() {
     let heatMapUUID = document.querySelector("#heatmap-select").value;
     $.get("/api/jobs/" + heatMapUUID + ".txt")
@@ -172,20 +188,21 @@ function loadKml() {
         });
 }
 
+
+/**
+ * Показать или скрыть гексогональную сетку на карте
+ * */
 function showHexMap() {
-    document.querySelector("#hexMap").onchange = (e) => {
-        let checked = e.target.checked;
-        if (checked) {
-            var grid = new ol.HexGrid ({ size:600, origin: map.getView().getCenter() });
-            var hex = new ol.source.HexMap({ hexGrid: grid });
-            map.addLayer (
-                new ol.layer.Image({
-                    source: hex,
-                    name: 'HEXMAP'
-                })
-            );
-        } else {
-            clearMap('HEXMAP');
-        }
+    if (document.querySelector("#hexMap").checked) {
+        var grid = new ol.HexGrid ({ size:600, origin: map.getView().getCenter() });
+        var hex = new ol.source.HexMap({ hexGrid: grid });
+        map.addLayer (
+            new ol.layer.Image({
+                source: hex,
+                name: 'HEXMAP'
+            })
+        );
+    } else {
+        clearMap('HEXMAP');
     }
 }
