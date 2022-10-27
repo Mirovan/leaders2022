@@ -7,7 +7,7 @@ const map = new ol.Map({
         }),
     ],
     view: new ol.View({
-        center: ol.proj.transform([37.646930, 55.725146], 'EPSG:4326', 'EPSG:3857'),
+        center: ol.proj.transform([37.618423, 55.751244], 'EPSG:4326', 'EPSG:3857'),
         zoom: 11
     })
 });
@@ -81,7 +81,7 @@ function savePostamat(place, address, latitude, longitude) {
         data: JSON.stringify({place: place, address: address, latitude: latitude, longitude: longitude}),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function(){
+        success: function () {
             //ToDo: disable button
         }
     });
@@ -134,7 +134,7 @@ function createLayer(layerName, color, width, square, lat, lon) {
 function getInsertPostamatRow(name, address, phone, lat, lon) {
     address = address.replace("Российская Федерация, внутригородская территория", "").trim();
     var res =
-    "<tr>" +
+        "<tr>" +
         "<td>" + address + "<br />(" + name + ")" + "</td>" +
         "<td>" + phone + "</td>" +
         "<td><button class=\"btn btn-outline-primary btn-sm\" onclick=\"savePostamat(" +
@@ -160,7 +160,7 @@ function calcMap() {
             clearMap('SECTOR_OBJECT');
             clearMap('HEATMAP');
 
-            for (let i=0; i<400; i++) {
+            for (let i = 0; i < 400; i++) {
                 let layer = createLayer(
                     'SECTOR_OBJECT',
                     '#9293a5',
@@ -194,9 +194,10 @@ function loadKml() {
  * */
 function showHexMap() {
     if (document.querySelector("#hexMap").checked) {
-        var grid = new ol.HexGrid ({ size:600, origin: map.getView().getCenter() });
-        var hex = new ol.source.HexMap({ hexGrid: grid });
-        map.addLayer (
+        var grid = new ol.HexGrid({size: 600, origin: map.getView().getCenter()});
+        var hex = new ol.source.HexMap({hexGrid: grid});
+        hex.showCoordiantes("axial");
+        map.addLayer(
             new ol.layer.Image({
                 source: hex,
                 name: 'HEXMAP'
@@ -205,4 +206,69 @@ function showHexMap() {
     } else {
         clearMap('HEXMAP');
     }
+}
+
+
+function createHex() {
+    $.get("/api/hexagon")
+        .done(function (data) {
+            var feature = new ol.Feature({
+                geometry: new ol.geom.Polygon(data)
+            });
+            feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+            var vectorSource = new ol.source.Vector({
+                features: [feature]
+            });
+
+            map.addLayer(
+                new ol.layer.Vector({
+                    source: vectorSource,
+                    style: [
+                        new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: 'red',
+                                width: '3'
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(0, 0, 255, 0.1)'
+                            })
+                        })
+                    ],
+                    zIndex: 100
+                })
+            );
+        });
+
+    // let polyArr = [
+    //     [
+    //         37.64693,
+    //         55.727840525720495
+    //     ],
+    //     [
+    //         37.651064911990666,
+    //         55.72649319342798
+    //     ],
+    //     [
+    //         37.65106462727519,
+    //         55.7237986671181
+    //     ],
+    //     [
+    //         37.64693,
+    //         55.72245147308974
+    //     ],
+    //     [
+    //         37.642795372724805,
+    //         55.7237986671181
+    //     ],
+    //     [
+    //         37.64279508800933,
+    //         55.72649319342798
+    //     ],
+    //     [
+    //         37.64693,
+    //         55.727840525720495
+    //     ]
+    // ];
+
+
 }

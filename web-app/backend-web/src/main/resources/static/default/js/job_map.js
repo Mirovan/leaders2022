@@ -8,7 +8,7 @@ function loadMap(txt) {
             createHeatMap(txt)
         ],
         view: new ol.View({
-            center: ol.proj.transform([37.646930, 55.725146], 'EPSG:4326', 'EPSG:3857'),
+            center: ol.proj.transform([37.618423, 55.751244], 'EPSG:4326', 'EPSG:3857'),
             zoom: 11
         })
     });
