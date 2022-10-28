@@ -212,7 +212,7 @@ function showHexMapSimpleFrontGrid() {
 function showHexMap() {
     if (document.querySelector("#hexMap").checked) {
 
-        $.get("/api/hexagon")
+        $.get("/api/hexagon", {hexagonRadius: document.querySelector("#hexagonRadius").value})
             .done(function (data) {
                 var feature = new ol.Feature({
                     geometry: new ol.geom.Polygon(data)

@@ -6,6 +6,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bigint.webapp.dto.Coord;
 
@@ -17,13 +18,14 @@ import java.util.List;
 @RequestMapping(value = "/api/hexagon")
 public class HexagonRestController {
 
-    private final int hexagonRadius = 300;
+//    private final int hexagonRadius = 300;
 
     /**
      * Тестовый метод для генерации гексагональной сетки
      */
     @GetMapping()
-    public List<Double[][]> generate() throws FactoryException, TransformException {
+    public List<Double[][]> generate(@RequestParam(value = "hexagonRadius", defaultValue = "300") Integer hexagonRadius)
+            throws FactoryException, TransformException {
         List<Double[][]> hexGrid = new ArrayList<>();
 
         Coord cityCenter = new Coord(55.751244, 37.618423);
