@@ -192,7 +192,7 @@ function loadKml() {
 /**
  * Показать или скрыть гексогональную сетку на карте
  * */
-function showHexMap() {
+function showHexMapSimpleFrontGrid() {
     if (document.querySelector("#hexMap").checked) {
         var grid = new ol.HexGrid({size: 600, origin: map.getView().getCenter()});
         var hex = new ol.source.HexMap({hexGrid: grid});
@@ -209,35 +209,37 @@ function showHexMap() {
 }
 
 
-function createHex() {
-    clearMap('HEXMAP');
+function showHexMap() {
+    if (document.querySelector("#hexMap").checked) {
 
-    $.get("/api/hexagon")
-        .done(function (data) {
-            var feature = new ol.Feature({
-                geometry: new ol.geom.Polygon(data)
-            });
-            feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
-            var vectorSource = new ol.source.Vector({
-                features: [feature]
-            });
+        $.get("/api/hexagon")
+            .done(function (data) {
+                var feature = new ol.Feature({
+                    geometry: new ol.geom.Polygon(data)
+                });
+                feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+                var vectorSource = new ol.source.Vector({
+                    features: [feature]
+                });
 
-            map.addLayer(
-                new ol.layer.Vector({
-                    source: vectorSource,
-                    style: [
-                        new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                                color: 'rgba(125,0,135,0.45)',
-                                width: '1',
-                                lineDash: [4]
+                map.addLayer(
+                    new ol.layer.Vector({
+                        source: vectorSource,
+                        style: [
+                            new ol.style.Style({
+                                stroke: new ol.style.Stroke({
+                                    color: 'rgba(125,0,135,0.45)',
+                                    width: '1',
+                                    lineDash: [4]
+                                })
                             })
-                        })
-                    ],
-                    name: 'HEXMAP',
-                    zIndex: 100
-                })
-            );
-        });
-
+                        ],
+                        name: 'HEXMAP',
+                        zIndex: 100
+                    })
+                );
+            });
+    } else {
+        clearMap('HEXMAP');
+    }
 }
