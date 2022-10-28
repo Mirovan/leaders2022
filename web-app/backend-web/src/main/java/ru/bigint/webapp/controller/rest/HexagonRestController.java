@@ -29,32 +29,52 @@ public class HexagonRestController {
         Coord cityCenter = new Coord(55.751244, 37.618423);
 
         GeodeticCalculator calc = new GeodeticCalculator();
-        double lenX = 2 * Math.sqrt(Math.pow(hexagonRadius,2) - Math.pow(hexagonRadius/2,2));
+        //Размер отступа между гексагонами - равен перпендикуляру от центра до стороны гексагона
+        double offset = Math.sqrt(Math.pow(hexagonRadius, 2) - Math.pow(hexagonRadius / 2, 2));
 
-        //Генерим N*N точек с центрами гексагонов
+        //Генерим N*M точек с центрами гексагонов
         //Для каждой точки вычисляем координаты гексагона
-        int n = 10;
+        int n = 30;
+        int m = 50;
 
-        for (int i=-n; i<n; i++) {
-            //Вычисление центров гексагонов по оси X
-            calc.setStartingGeographicPoint(cityCenter.getLongitude(), cityCenter.getLatitude());
-
-            calc.setDirection(90, i * lenX);
-            Point2D hexagonCenter = calc.getDestinationGeographicPoint();
-
-            Double[][] hexagon = new Double[7][2];
-            for (int k = 0; k < 7; k++) {
-                calc.setStartingGeographicPoint(hexagonCenter.getX(), hexagonCenter.getY());
-                calc.setDirection(k * 60, hexagonRadius);
-                Point2D point = calc.getDestinationGeographicPoint();
-
-                Double[] coord = new Double[2];
-                coord[0] = point.getX();
-                coord[1] = point.getY();
-
-                hexagon[k] = coord;
+        for (int i = -m; i <= m; i++) {
+            //Вычисление центрального гексагона по оси Y
+            Point2D centerPoint;
+            //Вычисление координат центрального гексагона для четного и нечетного ряда
+            if (i % 2 == 0) {
+                calc.setStartingGeographicPoint(cityCenter.getLongitude(), cityCenter.getLatitude());
+                double offsetY = 3 * hexagonRadius;
+                calc.setDirection(0, i / 2 * offsetY);
+            } else {
+                calc.setStartingGeographicPoint(cityCenter.getLongitude(), cityCenter.getLatitude());
+                calc.setDirection(30, offset * 2);
+                centerPoint = calc.getDestinationGeographicPoint();
+                calc.setStartingGeographicPoint(centerPoint);
+                double offsetY = 3 * hexagonRadius;
+                calc.setDirection(0, (i-1)/2 * offsetY);
             }
-            hexGrid.add(hexagon);
+            centerPoint = calc.getDestinationGeographicPoint();
+
+            for (int j = -n; j <= n; j++) {
+                //Вычисление центров гексагонов по оси X
+                calc.setStartingGeographicPoint(centerPoint.getX(), centerPoint.getY());
+                calc.setDirection(90, j * offset * 2);
+                Point2D hexagonCenter = calc.getDestinationGeographicPoint();
+
+                Double[][] hexagon = new Double[7][2];
+                for (int k = 0; k < 7; k++) {
+                    calc.setStartingGeographicPoint(hexagonCenter.getX(), hexagonCenter.getY());
+                    calc.setDirection(k * 60, hexagonRadius);
+                    Point2D point = calc.getDestinationGeographicPoint();
+
+                    Double[] coord = new Double[2];
+                    coord[0] = point.getX();
+                    coord[1] = point.getY();
+
+                    hexagon[k] = coord;
+                }
+                hexGrid.add(hexagon);
+            }
         }
 
         return hexGrid;

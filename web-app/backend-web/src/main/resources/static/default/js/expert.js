@@ -210,6 +210,8 @@ function showHexMap() {
 
 
 function createHex() {
+    clearMap('HEXMAP');
+
     $.get("/api/hexagon")
         .done(function (data) {
             var feature = new ol.Feature({
@@ -226,49 +228,16 @@ function createHex() {
                     style: [
                         new ol.style.Style({
                             stroke: new ol.style.Stroke({
-                                color: 'red',
-                                width: '3'
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(0, 0, 255, 0.1)'
+                                color: 'rgba(125,0,135,0.45)',
+                                width: '1',
+                                lineDash: [4]
                             })
                         })
                     ],
+                    name: 'HEXMAP',
                     zIndex: 100
                 })
             );
         });
-
-    // let polyArr = [
-    //     [
-    //         37.64693,
-    //         55.727840525720495
-    //     ],
-    //     [
-    //         37.651064911990666,
-    //         55.72649319342798
-    //     ],
-    //     [
-    //         37.65106462727519,
-    //         55.7237986671181
-    //     ],
-    //     [
-    //         37.64693,
-    //         55.72245147308974
-    //     ],
-    //     [
-    //         37.642795372724805,
-    //         55.7237986671181
-    //     ],
-    //     [
-    //         37.64279508800933,
-    //         55.72649319342798
-    //     ],
-    //     [
-    //         37.64693,
-    //         55.727840525720495
-    //     ]
-    // ];
-
 
 }
