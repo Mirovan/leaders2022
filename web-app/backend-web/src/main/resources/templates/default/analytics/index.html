@@ -36,7 +36,7 @@
                             </td>
                             <td>
                                 <button class="btn btn-outline-primary btn-sm"
-                                        th:attr="onclick=|getStat('${item.id}')|">Статистика
+                                        th:attr="onclick=|getPostamatStat('${item.id}')|">Статистика
                                 </button>
                             </td>
                         </tr>
@@ -79,8 +79,67 @@
     const ctx = document.getElementById('myChart').getContext('2d');
     var chart = new Chart(ctx, null);
 
+    const CHART_COLORS = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
+    };
+
+    //Статистика по использованию всех постаматов
+    $(function () {
+        jQuery.ajax({
+            url: "/api/analytics/postamat/using/all",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                chart.destroy();
+
+                var labels = response.map(function (item) {
+                    return item.key;
+                });
+                var data = response.map(function (item) {
+                    return item.value;
+                });
+                var colors = response.map(function (item) {
+                    return item.color;
+                });
+
+
+                const config = {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: colors
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Статистика загруженности постаматов за год, %'
+                            }
+                        }
+                    },
+                };
+
+                chart = new Chart(ctx, config);
+            }
+        });
+    });
+
+
     //Получение статистики использования постамата
-    function getStat(postamatId) {
+    function getPostamatStat(postamatId) {
         jQuery.ajax({
             url: "/api/analytics/postamat/using",
             type: "GET",
@@ -118,42 +177,6 @@
             }
         });
     }
-
-    // const ctx = document.getElementById('myChart').getContext('2d');
-    // const myChart = new Chart(ctx, {
-    //     type: 'bar',
-    //     data: {
-    //         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    //         datasets: [{
-    //             label: '# of Votes',
-    //             data: [12, 19, 3, 5, 2, 3],
-    //             backgroundColor: [
-    //                 'rgba(255, 99, 132, 0.2)',
-    //                 'rgba(54, 162, 235, 0.2)',
-    //                 'rgba(255, 206, 86, 0.2)',
-    //                 'rgba(75, 192, 192, 0.2)',
-    //                 'rgba(153, 102, 255, 0.2)',
-    //                 'rgba(255, 159, 64, 0.2)'
-    //             ],
-    //             borderColor: [
-    //                 'rgba(255, 99, 132, 1)',
-    //                 'rgba(54, 162, 235, 1)',
-    //                 'rgba(255, 206, 86, 1)',
-    //                 'rgba(75, 192, 192, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(255, 159, 64, 1)'
-    //             ],
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         scales: {
-    //             y: {
-    //                 beginAtZero: true
-    //             }
-    //         }
-    //     }
-    // });
 </script>
 
 </body>
