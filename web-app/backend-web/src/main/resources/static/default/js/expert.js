@@ -212,14 +212,15 @@ function showHexMapSimpleFrontGrid() {
 function showHexMap() {
     if (document.querySelector("#hexMap").checked) {
 
-        $.get("/api/hexagon", {hexagonRadius: document.querySelector("#hexagonRadius").value})
-            .done(function (data) {
-                var feature = new ol.Feature({
-                    geometry: new ol.geom.Polygon(data)
+        var format = new ol.format.WKT();
+
+        $.getJSON("/api/hexagon", {hexagonRadius: document.querySelector("#hexagonRadius").value}, function (data) {
+                var features = data.map(function(wkt) {
+                    return format.readFeature(wkt);
                 });
-                feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+                    console.log(features);
                 var vectorSource = new ol.source.Vector({
-                    features: [feature]
+                    features: features
                 });
 
                 map.addLayer(
