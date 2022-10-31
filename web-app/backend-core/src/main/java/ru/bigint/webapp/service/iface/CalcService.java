@@ -1,9 +1,9 @@
 package ru.bigint.webapp.service.iface;
 
-import ru.bigint.webapp.dto.CalcPointDto;
+import ru.bigint.webapp.dto.ColoredPolygon;
 
 import java.util.List;
 
 public interface CalcService {
-    List<CalcPointDto> calculate(int radius, String kmlId);
+    List<ColoredPolygon> calculate(int radius, String kmlId, boolean considerMalls, boolean considerSupermarkets, boolean considerMetro, boolean considerPostamat);
 }
