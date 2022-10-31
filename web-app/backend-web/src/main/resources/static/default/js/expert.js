@@ -152,26 +152,44 @@ function getInsertPostamatRow(name, address, phone, lat, lon) {
  * Расчет и вывод оптимальных секторов для установки постаматов
  * */
 function calcMap() {
-    let radius = document.querySelector("#radius-input").value;
-    let heatMapUUID = document.querySelector("#heatmap-select").value;
+    let radius = $("#hexagonRadius").val();
+    let kmlId = $("#heatmap-select").val();
+    let considerMalls = $("#considerMalls").is(":checked");
+    let considerSupermarkets = $("#considerSupermarkets").is(":checked");
+    let considerMetro = $("#considerMetro").is(":checked");
+    let considerPostamat = $("#considerPostamat").is(":checked");
 
-    $.get("/api/calc", {radius: radius, kmlId: heatMapUUID})
-        .done(function (data) {
+    $.getJSON("/api/calc", {radius, kmlId, considerMalls, considerSupermarkets, considerMetro, considerPostamat}, function (data) {
             clearMap('SECTOR_OBJECT');
             clearMap('HEATMAP');
+            var format = new ol.format.WKT();
+            var features = data.map(function(item) {
+                const feature = format.readFeature(item.wkt);
+                const w = Math.floor(item.weight * 512);
+                const r = w > 255 ? 255 : w;
+                const g = w < 255 ? 255 : (512 - w);
+                console.log(r, g);
+                feature.setStyle(new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'rgba(125,0,135,0.45)',
+                        width: '1',
+                        lineDash: [4]
+                    }),
+                    fill: new ol.style.Fill({ color: 'rgba(' + r + ', ' + g + ', 0, 0.3)' }),
+                }));
+                return feature;
+            });
+            var vectorSource = new ol.source.Vector({
+                features: features
+            });
 
-            for (let i = 0; i < 400; i++) {
-                let layer = createLayer(
-                    'SECTOR_OBJECT',
-                    '#9293a5',
-                    1,
-                    400,
-                    data[i]["point"]["latitude"],
-                    data[i]["point"]["longitude"]);
-                map.addLayer(layer);
-            }
-
-            loadKml();
+            map.addLayer(
+                new ol.layer.Vector({
+                    source: vectorSource,
+                    name: 'SECTOR_OBJECT',
+                    zIndex: 100
+                })
+            );
         });
 }
 
@@ -218,7 +236,6 @@ function showHexMap() {
                 var features = data.map(function(wkt) {
                     return format.readFeature(wkt);
                 });
-                    console.log(features);
                 var vectorSource = new ol.source.Vector({
                     features: features
                 });
