@@ -1,8 +1,5 @@
 package ru.bigint.webapp.dto;
 
-/**
- * Результат расчета - где ставить постаматы.
- * */
 public class ColoredPolygon {
     // Описание полигона
     private String wkt;
