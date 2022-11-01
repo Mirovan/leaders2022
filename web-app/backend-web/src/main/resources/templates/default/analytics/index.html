@@ -10,7 +10,7 @@
 <div th:replace="inc/top_nav.inc::top_nav"></div>
 
 <!-- Page Content -->
-<div style="padding: 0 50px;">
+<div style="padding: 0 200px;">
 
     <div class="page-header" id="banner">
         <div class="row">
@@ -51,133 +51,175 @@
                     <h5>Статистика постамата</h5>
                     <hr/>
                 </div>
-                <canvas id="myChart" width="400" height="200"></canvas>
+                <div class="row">
+                    <div class="row">
+                        <canvas id="myChart" width="600" height="350"></canvas>
+                    </div>
+                    <div class="row">
+                        <br />
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <canvas id="myChart2" width="600" height="300"></canvas>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+
+                <div class="row">
+                    <hr/>
+                </div>
+
             </div>
 
         </div>
-        <!-- /.row -->
+        <!-- /.container -->
 
 
-        <div class="row">
-            <hr/>
-        </div>
+        <!-- Footer -->
+        <footer th:replace="inc/footer.inc::footer"></footer>
 
-    </div>
+        <!-- Bootstrap core JavaScript -->
+        <div th:replace="inc/js.inc::js"></div>
 
-</div>
-<!-- /.container -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+        <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const ctx2 = document.getElementById('myChart2').getContext('2d');
+            let chart = new Chart(ctx, null);
+            let chart2 = new Chart(ctx2, null);
 
+            const CHART_COLORS = {
+                red: 'rgb(255, 99, 132)',
+                orange: 'rgb(255, 159, 64)',
+                yellow: 'rgb(255, 205, 86)',
+                green: 'rgb(75, 192, 192)',
+                blue: 'rgb(54, 162, 235)',
+                purple: 'rgb(153, 102, 255)',
+                grey: 'rgb(201, 203, 207)'
+            };
 
-<!-- Footer -->
-<footer th:replace="inc/footer.inc::footer"></footer>
+            //Статистика по использованию всех постаматов
+            $(function () {
+                jQuery.ajax({
+                    url: "/api/analytics/postamat/using/all",
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        chart.destroy();
+                        chart2.destroy();
 
-<!-- Bootstrap core JavaScript -->
-<div th:replace="inc/js.inc::js"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-<script>
-    const ctx = document.getElementById('myChart').getContext('2d');
-    var chart = new Chart(ctx, null);
-
-    const CHART_COLORS = {
-        red: 'rgb(255, 99, 132)',
-        orange: 'rgb(255, 159, 64)',
-        yellow: 'rgb(255, 205, 86)',
-        green: 'rgb(75, 192, 192)',
-        blue: 'rgb(54, 162, 235)',
-        purple: 'rgb(153, 102, 255)',
-        grey: 'rgb(201, 203, 207)'
-    };
-
-    //Статистика по использованию всех постаматов
-    $(function () {
-        jQuery.ajax({
-            url: "/api/analytics/postamat/using/all",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            success: function (response) {
-                chart.destroy();
-
-                var labels = response.map(function (item) {
-                    return item.key;
-                });
-                var data = response.map(function (item) {
-                    return item.value;
-                });
-                var colors = response.map(function (item) {
-                    return item.color;
-                });
-
-
-                const config = {
-                    type: 'pie',
-                    data: {
-                        labels: labels,
-                        datasets: [{
+                        //График по месяцам среднее число посылок
+                        var labels = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+                        const data = {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Средняя загрузка постаматов в месяц',
+                                data: [282, 256, 321, 296, 302, 314, 288, 275, 306, 358, 335, 374],
+                                fill: false,
+                                borderColor: 'rgb(75, 192, 192)',
+                                tension: 0.1,
+                            }]
+                        };
+                        const config = {
+                            type: 'line',
                             data: data,
-                            backgroundColor: colors
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            title: {
-                                display: true,
-                                text: 'Статистика загруженности постаматов за год, %'
+                            options: {
+                                scales: {
+                                    y: {
+                                        min: 200,
+                                        max: 400,
+                                        ticks: {
+                                            stepSize: 20
+                                        }
+                                    }
+                                }
                             }
-                        }
-                    },
-                };
-
-                chart = new Chart(ctx, config);
-            }
-        });
-    });
+                        };
 
 
-    //Получение статистики использования постамата
-    function getPostamatStat(postamatId) {
-        jQuery.ajax({
-            url: "/api/analytics/postamat/using",
-            type: "GET",
-            data: {
-                id: postamatId
-            },
-            contentType: "application/json; charset=utf-8",
-            success: function (response) {
-                chart.destroy();
+                        //Пирог с эффективными и неэффктивными постаматами
+                        var labels2 = response.map(function (item) {
+                            return item.key;
+                        });
+                        var data2 = response.map(function (item) {
+                            return item.value;
+                        });
+                        var colors = response.map(function (item) {
+                            return item.color;
+                        });
 
-                var arr = response.postamatUsing;
-                console.log(arr);
-                var labels = arr.map(function (item) {
-                    var labelStr = item.month + "." + item.year;
-                    if (item.month < 10) labelStr = "0" + labelStr;
-                    return labelStr;
-                });
-                var data = arr.map(function (item) {
-                    return item.useCount;
-                });
+                        const config2 = {
+                            type: 'doughnut',
+                            data: {
+                                labels: labels2,
+                                datasets: [{
+                                    data: data2,
+                                    backgroundColor: colors
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Статистика загруженности постаматов за год, %'
+                                    }
+                                }
+                            },
+                        };
 
-                var config = {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Использование постамата по месяцам',
-                            data: data,
-                            backgroundColor: 'rgba(0, 119, 204, 0.3)'
-                        }]
+                        chart = new Chart(ctx, config);
+                        chart2 = new Chart(ctx2, config2);
                     }
-                };
+                });
+            });
 
-                chart = new Chart(ctx, config);
+
+            //Получение статистики использования постамата
+            function getPostamatStat(postamatId) {
+                jQuery.ajax({
+                    url: "/api/analytics/postamat/using",
+                    type: "GET",
+                    data: {
+                        id: postamatId
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        chart.destroy();
+                        chart2.destroy();
+
+                        var arr = response.postamatUsing;
+                        console.log(arr);
+                        var labels = arr.map(function (item) {
+                            var labelStr = item.month + "." + item.year;
+                            if (item.month < 10) labelStr = "0" + labelStr;
+                            return labelStr;
+                        });
+                        var data = arr.map(function (item) {
+                            return item.useCount;
+                        });
+
+                        var config = {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Использование постамата по месяцам',
+                                    data: data,
+                                    backgroundColor: 'rgba(0, 119, 204, 0.3)'
+                                }]
+                            }
+                        };
+
+                        chart = new Chart(ctx, config);
+                    }
+                });
             }
-        });
-    }
-</script>
+        </script>
 
 </body>
 
