@@ -34,7 +34,7 @@ public class PostamatServiceImpl implements PostamatService {
             postamatUsing.setPostamat(postamat);
             postamatUsing.setYear(2022);
             postamatUsing.setMonth(i);
-            postamatUsing.setUseCount(Util.getRandomNumber(800, 20000));
+            postamatUsing.setUseCount(Util.getRandomNumber(100, 600));
             postamatUsingList.add(postamatUsing);
         }
         postamat.setPostamatUsing(postamatUsingList);
