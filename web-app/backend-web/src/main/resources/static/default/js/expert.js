@@ -28,7 +28,7 @@ map.on('click', function (evt) {
 
     $.get("/api/kiosk/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
-            let tableData = "<tr><th colspan='3'>Киоски</th></tr>";
+            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/kiosk.png' width='25' />&nbsp;&nbsp;Киоски</th></tr>";
 
             for (let item in data) {
                 tableData += getInsertPostamatRow(
@@ -38,7 +38,7 @@ map.on('click', function (evt) {
                     data[item]["latitude"],
                     data[item]["longitude"]);
 
-                var layer = createLayer('NEAREST_OBJECT', 'blue', 2, 100, data[item]["latitude"], data[item]["longitude"]);
+                var layer = createLayer('NEAREST_OBJECT', 'blue', 2, 100, data[item]["latitude"], data[item]["longitude"], "kiosk");
                 map.addLayer(layer);
             }
 
@@ -47,7 +47,7 @@ map.on('click', function (evt) {
 
     $.get("/api/mfc/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
-            let tableData = "<tr><th colspan='3'>МФЦ</th></tr>";
+            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/mfc.png' width='25' />&nbsp;&nbsp;МФЦ</th></tr>";
 
             for (let item in data) {
                 tableData += getInsertPostamatRow(
@@ -57,7 +57,7 @@ map.on('click', function (evt) {
                     data[item]["latitude"],
                     data[item]["longitude"]);
 
-                var layer = createLayer('NEAREST_OBJECT', 'green', 2, 100, data[item]["latitude"], data[item]["longitude"]);
+                var layer = createLayer('NEAREST_OBJECT', 'green', 2, 100, data[item]["latitude"], data[item]["longitude"], "mfc");
                 map.addLayer(layer);
             }
 
@@ -66,7 +66,7 @@ map.on('click', function (evt) {
 
     $.get("/api/library/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
-            let tableData = "<tr><th colspan='3'>Библиотеки</th></tr>";
+            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/library.png' width='25' />&nbsp;&nbsp;Библиотеки</th></tr>";
 
             for (let item in data) {
                 tableData += getInsertPostamatRow(
@@ -76,7 +76,7 @@ map.on('click', function (evt) {
                     data[item]["latitude"],
                     data[item]["longitude"]);
 
-                var layer = createLayer('NEAREST_OBJECT', '#7f6809', 2, 100, data[item]["latitude"], data[item]["longitude"]);
+                var layer = createLayer('NEAREST_OBJECT', '#7f6809', 2, 100, data[item]["latitude"], data[item]["longitude"], "library");
                 map.addLayer(layer);
             }
 
@@ -85,7 +85,7 @@ map.on('click', function (evt) {
 
     $.get("/api/malls/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
-            let tableData = "<tr><th colspan='3'>Торговый центры</th></tr>";
+            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/mall.png' width='25' />&nbsp;&nbsp;Торговый центры</th></tr>";
 
             for (let item in data) {
                 tableData += getInsertPostamatRow(
@@ -95,7 +95,7 @@ map.on('click', function (evt) {
                     data[item]["latitude"],
                     data[item]["longitude"]);
 
-                var layer = createLayer('NEAREST_OBJECT', '#73097f', 2, 100, data[item]["latitude"], data[item]["longitude"]);
+                var layer = createLayer('NEAREST_OBJECT', '#73097f', 2, 100, data[item]["latitude"], data[item]["longitude"], "mall");
                 map.addLayer(layer);
             }
 
@@ -105,7 +105,7 @@ map.on('click', function (evt) {
 
     $.get("/api/supermarkets/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
-            let tableData = "<tr><th colspan='3'>Супермаркеты</th></tr>";
+            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/supermarket.png' width='25' />&nbsp;&nbsp;Супермаркеты</th></tr>";
 
             for (let item in data) {
                 tableData += getInsertPostamatRow(
@@ -115,7 +115,7 @@ map.on('click', function (evt) {
                     data[item]["latitude"],
                     data[item]["longitude"]);
 
-                var layer = createLayer('NEAREST_OBJECT', '#7f3209', 2, 100, data[item]["latitude"], data[item]["longitude"]);
+                var layer = createLayer('NEAREST_OBJECT', '#7f3209', 2, 100, data[item]["latitude"], data[item]["longitude"], "supermarket");
                 map.addLayer(layer);
             }
 
@@ -155,31 +155,27 @@ function clearMap(layerName) {
 /**
  * Создание слоя карты
  * */
-function createLayer(layerName, color, width, square, lat, lon) {
-    //Рисуем точки на карте - ближайшие объекты к нажатой точке
-    var centerLongitudeLatitude = ol.proj.fromLonLat([
-        lon, lat
-    ]);
-
+function createLayer(layerName, color, width, square, lat, lon, icon) {
     return new ol.layer.Vector({
         source: new ol.source.Vector({
             projection: 'EPSG:4326',
             features: [
-                new ol.Feature(new ol.geom.Circle(centerLongitudeLatitude, square))
+                new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
+                    name: 'Somewhere near point ',
+                })
             ]
         }),
         name: layerName,
-        style: [
-            new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: color,
-                    width: width
-                }),
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 0, 255, 0.1)'
-                })
+        style: new ol.style.Style({
+            image: new ol.style.Icon({
+                anchor: [0.5, 0.5],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'fraction',
+                scale: 0.5,
+                src: '/static/default/images/icons/' + icon + '.png'
             })
-        ],
+        }),
         zIndex: 100
     });
 }
