@@ -1,12 +1,13 @@
 package ru.bigint.webapp.dto;
 
-public interface KioskDto {
+public interface LibraryDto {
     Integer getId();
     String getName();
     String getAddress();
-    String getAdmArea();
     String getDistrict();
-    String getBusinessEntity();
+    String getAdmArea();
+    String getPhone();
+    String getVisitors();
     Double getLatitude();
     Double getLongitude();
     Double getDist();

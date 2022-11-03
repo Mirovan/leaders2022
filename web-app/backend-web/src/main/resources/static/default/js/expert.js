@@ -26,13 +26,30 @@ map.on('click', function (evt) {
     //очистка списка
     document.querySelector("#nearest-objects").innerHTML = "";
 
-    $.get("/api/malls/nearest", {latitude: lat, longitude: lon})
+    $.get("/api/kiosk/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
-            let tableData = "<tr><th colspan='3'>Торговый центры</th></tr>";
+            let tableData = "<tr><th colspan='3'>Киоски</th></tr>";
 
             for (let item in data) {
-                //console.log(JSON.stringify(data[item]));
+                tableData += getInsertPostamatRow(
+                    data[item]["name"],
+                    data[item]["address"],
+                    data[item]["businessEntity"],
+                    data[item]["latitude"],
+                    data[item]["longitude"]);
 
+                var layer = createLayer('NEAREST_OBJECT', 'blue', 2, 100, data[item]["latitude"], data[item]["longitude"]);
+                map.addLayer(layer);
+            }
+
+            document.querySelector("#nearest-objects").innerHTML += tableData;
+        });
+
+    $.get("/api/mfc/nearest", {latitude: lat, longitude: lon})
+        .done(function (data) {
+            let tableData = "<tr><th colspan='3'>МФЦ</th></tr>";
+
+            for (let item in data) {
                 tableData += getInsertPostamatRow(
                     data[item]["name"],
                     data[item]["address"],
@@ -47,14 +64,11 @@ map.on('click', function (evt) {
             document.querySelector("#nearest-objects").innerHTML += tableData;
         });
 
-
-    $.get("/api/supermarkets/nearest", {latitude: lat, longitude: lon})
+    $.get("/api/library/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
-            let tableData = "<tr><th colspan='3'>Супермаркеты</th></tr>";
+            let tableData = "<tr><th colspan='3'>Библиотеки</th></tr>";
 
             for (let item in data) {
-                //console.log(JSON.stringify(data[item]));
-
                 tableData += getInsertPostamatRow(
                     data[item]["name"],
                     data[item]["address"],
@@ -62,12 +76,52 @@ map.on('click', function (evt) {
                     data[item]["latitude"],
                     data[item]["longitude"]);
 
-                var layer = createLayer('NEAREST_OBJECT', 'blue', 2, 100, data[item]["latitude"], data[item]["longitude"]);
+                var layer = createLayer('NEAREST_OBJECT', '#7f6809', 2, 100, data[item]["latitude"], data[item]["longitude"]);
                 map.addLayer(layer);
             }
 
             document.querySelector("#nearest-objects").innerHTML += tableData;
         });
+
+    $.get("/api/malls/nearest", {latitude: lat, longitude: lon})
+        .done(function (data) {
+            let tableData = "<tr><th colspan='3'>Торговый центры</th></tr>";
+
+            for (let item in data) {
+                tableData += getInsertPostamatRow(
+                    data[item]["name"],
+                    data[item]["address"],
+                    data[item]["phone"],
+                    data[item]["latitude"],
+                    data[item]["longitude"]);
+
+                var layer = createLayer('NEAREST_OBJECT', '#73097f', 2, 100, data[item]["latitude"], data[item]["longitude"]);
+                map.addLayer(layer);
+            }
+
+            document.querySelector("#nearest-objects").innerHTML += tableData;
+        });
+
+
+    $.get("/api/supermarkets/nearest", {latitude: lat, longitude: lon})
+        .done(function (data) {
+            let tableData = "<tr><th colspan='3'>Супермаркеты</th></tr>";
+
+            for (let item in data) {
+                tableData += getInsertPostamatRow(
+                    data[item]["name"],
+                    data[item]["address"],
+                    data[item]["phone"],
+                    data[item]["latitude"],
+                    data[item]["longitude"]);
+
+                var layer = createLayer('NEAREST_OBJECT', '#7f3209', 2, 100, data[item]["latitude"], data[item]["longitude"]);
+                map.addLayer(layer);
+            }
+
+            document.querySelector("#nearest-objects").innerHTML += tableData;
+        });
+
 });
 
 
@@ -131,12 +185,12 @@ function createLayer(layerName, color, width, square, lat, lon) {
 }
 
 
-function getInsertPostamatRow(name, address, phone, lat, lon) {
+function getInsertPostamatRow(name, address, addData, lat, lon) {
     address = address.replace("Российская Федерация, внутригородская территория", "").trim();
     var res =
         "<tr>" +
         "<td>" + address + "<br />(" + name + ")" + "</td>" +
-        "<td>" + phone + "</td>" +
+        "<td>" + addData + "</td>" +
         "<td><button class=\"btn btn-outline-primary btn-sm\" onclick=\"savePostamat(" +
         "'" + name + "', " +
         "'" + address + "', " +
@@ -215,23 +269,6 @@ function loadKml() {
 /**
  * Показать или скрыть гексогональную сетку на карте
  * */
-function showHexMapSimpleFrontGrid() {
-    if (document.querySelector("#hexMap").checked) {
-        var grid = new ol.HexGrid({size: 600, origin: map.getView().getCenter()});
-        var hex = new ol.source.HexMap({hexGrid: grid});
-        hex.showCoordiantes("axial");
-        map.addLayer(
-            new ol.layer.Image({
-                source: hex,
-                name: 'HEXMAP'
-            })
-        );
-    } else {
-        clearMap('HEXMAP');
-    }
-}
-
-
 function showHexMap() {
     if (document.querySelector("#hexMap").checked) {
 
@@ -268,6 +305,7 @@ function showHexMap() {
 }
 
 
+//Сохранение карты в файл
 document.getElementById('export-png').addEventListener('click', function () {
     map.once('rendercomplete', function () {
         const mapCanvas = document.createElement('canvas');

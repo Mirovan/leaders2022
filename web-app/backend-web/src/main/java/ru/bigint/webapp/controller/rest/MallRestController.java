@@ -23,7 +23,7 @@ public class MallRestController {
     @GetMapping("/nearest")
     public List<MallDto> getNearestMalls(@RequestParam(value = "latitude", required = false) Double latitude,
                                          @RequestParam(value = "longitude", required = false) Double longitude) {
-        List<MallDto> malls = mallService.findNearest(new Coord(latitude, longitude), 5);
+        List<MallDto> malls = mallService.findNearest(new Coord(latitude, longitude), 3);
         return malls;
     }
 
