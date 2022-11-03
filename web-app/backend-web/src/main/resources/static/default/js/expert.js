@@ -270,7 +270,7 @@ function showHexMap() {
 
         var format = new ol.format.WKT();
 
-        $.getJSON("/api/hexagon", {hexagonRadius: document.querySelector("#hexagonRadius").value}, function (data) {
+        $.getJSON("/api/calc/hexagon-map", {hexagonRadius: document.querySelector("#hexagonRadius").value}, function (data) {
                 var features = data.map(function(wkt) {
                     return format.readFeature(wkt);
                 });

@@ -1,5 +1,6 @@
 package ru.bigint.webapp.controller.rest;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +11,7 @@ import ru.bigint.webapp.service.iface.SupermarketService;
 
 import java.util.List;
 
+@Tag(name = "supermarkets", description = "Работа с данными супермаркетов")
 @RestController
 @RequestMapping(value = "/api/supermarkets")
 public class SupermarketRestController {
@@ -23,8 +25,7 @@ public class SupermarketRestController {
     @GetMapping("/nearest")
     public List<SupermarketDto> getNearestMalls(@RequestParam(value = "latitude", required = false) Double latitude,
                                                 @RequestParam(value = "longitude", required = false) Double longitude) {
-        List<SupermarketDto> supermarkets = supermarketService.findNearest(new Coord(latitude, longitude), 3);
-        return supermarkets;
+        return supermarketService.findNearest(new Coord(latitude, longitude), 3);
     }
 
 }

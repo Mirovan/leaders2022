@@ -1,5 +1,10 @@
 package ru.bigint.webapp.controller.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bigint.webapp.service.iface.KmlJobService;
 
+@Tag(name = "jobs", description = "Сервис создания задач для расчета слоев")
 @RestController
 @RequestMapping(value = "/api/jobs")
 public class KmlRestController {
@@ -18,6 +24,12 @@ public class KmlRestController {
         this.kmlJobService = kmlJobService;
     }
 
+    @Operation(summary = "Тепловая карта на основе плотности населения")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Возвращает тепловую карта на основе плотности населения",
+                    content = {@Content(mediaType = "application/json")})
+    })
     @GetMapping("/{id}.txt")
     @ResponseBody
     public ResponseEntity<byte[]> kml(@PathVariable String id) {
