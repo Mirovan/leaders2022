@@ -1,5 +1,6 @@
 package ru.bigint.webapp.controller.rest;
 
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,8 @@ import ru.bigint.webapp.service.iface.PostamatService;
 
 import java.util.List;
 
-@Tag(name = "postamats", description = "Сервис для работы с постаматами")
+@Api(tags = { "Постаматы" })
+@Tag(name = "Постаматы", description = "Сервис для работы с постаматами")
 @RestController
 @RequestMapping(value = "/api/postamats")
 public class PostamatRestController {

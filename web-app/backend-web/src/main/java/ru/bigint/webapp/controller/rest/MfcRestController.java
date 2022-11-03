@@ -1,5 +1,6 @@
 package ru.bigint.webapp.controller.rest;
 
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,8 @@ import ru.bigint.webapp.service.iface.MfcService;
 
 import java.util.List;
 
-@Tag(name = "mfc", description = "Работа с данными МФЦв")
+@Api(tags = { "МФЦ" })
+@Tag(name = "МФЦ", description = "Работа с данными МФЦ")
 @RestController
 @RequestMapping(value = "/api/mfc")
 public class MfcRestController {

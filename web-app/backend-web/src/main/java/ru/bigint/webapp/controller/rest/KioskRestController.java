@@ -1,5 +1,6 @@
 package ru.bigint.webapp.controller.rest;
 
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,8 @@ import ru.bigint.webapp.service.iface.KioskService;
 
 import java.util.List;
 
-@Tag(name = "kiosk", description = "Работа с данными киосков")
+@Api(tags = { "Киоски" })
+@Tag(name = "Киоски", description = "Работа с данными киосков")
 @RestController
 @RequestMapping(value = "/api/kiosk")
 public class KioskRestController {

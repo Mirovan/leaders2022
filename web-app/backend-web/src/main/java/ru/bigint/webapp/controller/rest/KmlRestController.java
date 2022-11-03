@@ -1,5 +1,6 @@
 package ru.bigint.webapp.controller.rest;
 
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bigint.webapp.service.iface.KmlJobService;
 
-@Tag(name = "jobs", description = "Сервис создания задач для расчета слоев")
+@Api(tags = { "Служебные слои" })
+@Tag(name = "Служебные слои", description = "Сервис создания задач для расчета слоев")
 @RestController
 @RequestMapping(value = "/api/jobs")
 public class KmlRestController {

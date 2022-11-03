@@ -1,5 +1,6 @@
 package ru.bigint.webapp.controller.rest;
 
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,8 +20,8 @@ import ru.bigint.webapp.service.iface.CalcService;
 
 import java.util.List;
 
-
-@Tag(name = "calc", description = "Расчет гексагональной тепловой карты")
+@Api(tags = { "Гексагоны" })
+@Tag(name = "Гексагоны", description = "Расчет гексагональной тепловой карты")
 @RestController
 @RequestMapping(value = "/api/calc")
 public class CalcRestController {
