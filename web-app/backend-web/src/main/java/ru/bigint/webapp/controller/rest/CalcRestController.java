@@ -29,13 +29,17 @@ public class CalcRestController {
     public List<ColoredPolygon> calculate(
             @RequestParam(value = "radius") int radius,
             @RequestParam(value = "kmlId") String kmlId,
+            @RequestParam(value = "considerHouses") boolean considerHouses,
             @RequestParam(value = "considerMalls") boolean considerMalls,
             @RequestParam(value = "considerSupermarkets") boolean considerSupermarkets,
             @RequestParam(value = "considerMetro") boolean considerMetro,
+            @RequestParam(value = "considerWorkCenter") boolean considerWorkCenter,
+            @RequestParam(value = "considerChildHouse") boolean considerChildHouse,
+            @RequestParam(value = "considerParking") boolean considerParking,
             @RequestParam(value = "considerPostamat") boolean considerPostamat
             ) {
-        return calcService.calculate(radius, kmlId, considerMalls, considerSupermarkets, considerMetro,
-                considerPostamat);
+        return calcService.calculate(radius, kmlId, considerHouses, considerMalls, considerSupermarkets, considerMetro,
+                considerPostamat, considerWorkCenter, considerChildHouse, considerParking);
     }
 
 }

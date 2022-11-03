@@ -154,12 +154,17 @@ function getInsertPostamatRow(name, address, phone, lat, lon) {
 function calcMap() {
     let radius = $("#hexagonRadius").val();
     let kmlId = $("#heatmap-select").val();
+    let considerHouses = $("#considerHouses").is(":checked");
     let considerMalls = $("#considerMalls").is(":checked");
     let considerSupermarkets = $("#considerSupermarkets").is(":checked");
     let considerMetro = $("#considerMetro").is(":checked");
+    let considerWorkCenter = $("#considerWorkCenter").is(":checked");
+    let considerChildHouse = $("#considerChildHouse").is(":checked");
+    let considerParking = $("#considerParking").is(":checked");
     let considerPostamat = $("#considerPostamat").is(":checked");
 
-    $.getJSON("/api/calc", {radius, kmlId, considerMalls, considerSupermarkets, considerMetro, considerPostamat}, function (data) {
+    $.getJSON("/api/calc", {radius, kmlId, considerHouses, considerMalls, considerSupermarkets, considerMetro,
+        considerWorkCenter, considerChildHouse, considerParking, considerPostamat}, function (data) {
             clearMap('SECTOR_OBJECT');
             clearMap('HEATMAP');
             var format = new ol.format.WKT();
@@ -175,7 +180,7 @@ function calcMap() {
                         width: '1',
                         lineDash: [4]
                     }),
-                    fill: new ol.style.Fill({ color: 'rgba(' + r + ', ' + g + ', 0, 0.3)' }),
+                    fill: new ol.style.Fill({ color: 'rgba(' + r + ', ' + g + ', 0, 0.5)' }),
                 }));
                 return feature;
             });
