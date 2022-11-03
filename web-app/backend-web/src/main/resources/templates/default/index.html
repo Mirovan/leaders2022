@@ -25,6 +25,14 @@
                 <div id="map"></div>
             </div>
             <div class="col-sm-4">
+                <div class="row" style="float: right; padding: 0 20px 0 0;">
+                    <button id="export-png" class="btn-success btn-sm" role="button">Сохранить изображение</button>
+                    <a id="image-download" download="map.png"></a>
+                    <br />
+                </div>
+
+                <div class="clearfix"></div>
+
                 <div class="row">
                     <h5>Анализ сегментов</h5>
                     <hr/>
@@ -32,7 +40,7 @@
 
                 <div class="container" style="margin: 0 0 0 -15px;">
 
-                    <div class="form-group row">
+                    <div class="form-group row" style="background: #c1bdbd;">
                         <strong>Параметры отображения</strong>
                     </div>
 
@@ -56,55 +64,58 @@
                             <input type="text" id="hexagonRadius" value="500" class="form-control form-control-sm"
                                    placeholder="col-form-label-sm">
                         </div>
-                        <hr />
                     </div>
 
-                    <div class="form-group row">
-                        <hr />
-                    </div>
-
-                    <div class="form-group row">
+                    <div class="form-group row" style="background: #c1bdbd;">
                         <strong>Параметры расчета</strong>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
                         <input class="form-check-input" type="checkbox" id="considerHouses">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerHouses">Учитывать жилые дома</label>
+                        <label class="form-check-label" style="font-size: 12px;" for="considerHouses">Учитывать жилые
+                            дома</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
                         <input class="form-check-input" type="checkbox" id="considerMalls">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerMalls">Учитывать торговые центры</label>
+                        <label class="form-check-label" style="font-size: 12px;" for="considerMalls">Учитывать торговые
+                            центры</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
                         <input class="form-check-input" type="checkbox" id="considerSupermarkets">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerMalls">Учитывать супермаркеты</label>
+                        <label class="form-check-label" style="font-size: 12px;" for="considerMalls">Учитывать
+                            супермаркеты</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
                         <input class="form-check-input" type="checkbox" id="considerMetro">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerMetro">Учитывать метро</label>
+                        <label class="form-check-label" style="font-size: 12px;" for="considerMetro">Учитывать
+                            метро</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
                         <input class="form-check-input" type="checkbox" id="considerWorkCenter">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerWorkCenter">Учитывать бизнес центры</label>
+                        <label class="form-check-label" style="font-size: 12px;" for="considerWorkCenter">Учитывать
+                            бизнес центры</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
                         <input class="form-check-input" type="checkbox" id="considerChildHouse">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerChildHouse">Учитывать детские сады</label>
+                        <label class="form-check-label" style="font-size: 12px;" for="considerChildHouse">Учитывать
+                            детские сады</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
                         <input class="form-check-input" type="checkbox" id="considerParking">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerParking">Учитывать парковки</label>
+                        <label class="form-check-label" style="font-size: 12px;" for="considerParking">Учитывать
+                            парковки</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
                         <input class="form-check-input" type="checkbox" id="considerPostamat">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerPostamat">Учитывать установленные постаматы</label>
+                        <label class="form-check-label" style="font-size: 12px;" for="considerPostamat">Учитывать
+                            установленные постаматы</label>
                     </div>
 
                     <div class="form-group row">
@@ -113,7 +124,7 @@
                 </div>
 
                 <div class="row">
-                    <br />
+                    <br/>
                     <h5>Варианты размещения постамата</h5>
                     <hr/>
                 </div>
@@ -139,14 +150,10 @@
 <!-- Bootstrap core JavaScript -->
 <div th:replace="inc/js.inc::js"></div>
 
-<!-- ol-ext -->
-<link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.css"/>
-<script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.js"></script>
-<script type="text/javascript" src="/static/default/js/ol-ext/ol-games.js"></script>
-
 <script src="/static/default/js/expert.js"></script>
 <script src="/static/default/js/job_map.js"></script>
-
+<!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer -->
+<script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"></script>
 
 </body>
 
