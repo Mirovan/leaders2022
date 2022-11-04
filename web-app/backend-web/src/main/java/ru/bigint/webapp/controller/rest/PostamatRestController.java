@@ -12,12 +12,15 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +32,7 @@ import ru.bigint.webapp.service.iface.PostamatService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -59,9 +63,15 @@ public class PostamatRestController {
     @GetMapping("/export")
     public ResponseEntity<byte[]> export() {
         try {
-            File file = ResourceUtils.getFile("classpath:assets/fonts/arial.ttf");
+//            byte[] bytes = IOUtils.toByteArray(
+//                    Thread.currentThread().getContextClassLoader().getResourceAsStream("/assets/fonts/arial.ttf")
+//            );
 
-            BaseFont baseFont = BaseFont.createFont(file.getPath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            ClassPathResource classPathResource = new ClassPathResource("assets/fonts/arial.ttf");
+            byte[] bytes = FileCopyUtils.copyToByteArray(classPathResource.getInputStream());
+
+//            BaseFont baseFont = BaseFont.createFont(file.getPath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont baseFont = BaseFont.createFont("arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, bytes, null);
             Document document = new Document();
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -74,7 +84,7 @@ public class PostamatRestController {
             document.add(header);
 
             PdfPTable table = new PdfPTable(3);
-            table.setWidths(new float[] { 1, 2, 3 });
+            table.setWidths(new float[]{1, 2, 3});
             addTableHeader(table, font);
             addRows(table, font);
 

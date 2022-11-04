@@ -34,7 +34,7 @@ public class MallsGrid {
                     INSERT INTO hexgrid_temp
                     SELECT ST_Transform(ST_SetSRID(geom, 3857), 4326), i, j
                     FROM ST_HexagonGrid(
-                        :radius,
+                        :radius::float,
                         ST_Transform( ST_SetSRID((select ST_Extent(geom::geometry) from malls_temp), 4326), 3857 )
                     );
                     CREATE INDEX hexgrid_temp_geom_index ON hexgrid_temp USING GIST(geom);

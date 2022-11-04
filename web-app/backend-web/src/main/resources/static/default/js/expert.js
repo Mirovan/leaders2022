@@ -29,21 +29,23 @@ map.addOverlay(overlay);
 
 map.on('pointermove', function (event) {
     let coordinate = null;
-    let feature = map.forEachFeatureAtPixel(event.pixel, function(feature, layer) {
+    let layerName = null;
+    let feature = map.forEachFeatureAtPixel(event.pixel, function (feature, layer) {
         coordinate = event.coordinate;
+        layerName = layer.get('name');
         return feature;
     });
 
     if (feature != null
         && feature.get('geometry') != null
-        && feature.get('geometry') instanceof ol.geom.Point) {
+        && feature.get('geometry') instanceof ol.geom.Point
+        && 'NEAREST_OBJECT' === layerName) {
         this.getTargetElement().style.cursor = 'pointer';
         content.innerHTML = feature.get('name');
         overlay.setPosition(coordinate);
     } else {
         this.getTargetElement().style.cursor = '';
         overlay.setPosition(undefined);
-        closer.blur();
     }
 });
 
@@ -281,19 +283,20 @@ function calcMap() {
     let considerParking = $("#considerParking").is(":checked");
     let considerPostamat = $("#considerPostamat").is(":checked");
 
+    clearMap('SECTOR_OBJECT');
+    clearMap('HEATMAP');
+
     $.getJSON("/api/calc", {
         radius, kmlId, considerHouses, considerMalls, considerSupermarkets, considerMetro,
         considerWorkCenter, considerChildHouse, considerParking, considerPostamat
     }, function (data) {
-        clearMap('SECTOR_OBJECT');
-        clearMap('HEATMAP');
         var format = new ol.format.WKT();
         var features = data.map(function (item) {
             const feature = format.readFeature(item.wkt);
             const w = Math.floor(item.weight * 512);
             const r = w > 255 ? 255 : w;
             const g = w < 255 ? 255 : (512 - w);
-            console.log(r, g);
+            // console.log(r, g);
             feature.setStyle(new ol.style.Style({
                 stroke: new ol.style.Stroke({
                     color: 'rgba(125,0,135,0.45)',
@@ -324,11 +327,15 @@ function calcMap() {
  * */
 function loadKml() {
     let heatMapUUID = document.querySelector("#heatmap-select").value;
-    $.get("/api/jobs/" + heatMapUUID + ".txt")
-        .done(function (data) {
-            let layer = createHeatMap(data);
-            map.addLayer(layer);
-        });
+    if (heatMapUUID == 0) {
+        clearMap('HEATMAP');
+    } else {
+        $.get("/api/jobs/" + heatMapUUID + ".txt")
+            .done(function (data) {
+                let layer = createHeatMap(data);
+                map.addLayer(layer);
+            });
+    }
 }
 
 

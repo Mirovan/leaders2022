@@ -26,7 +26,7 @@ public class HexagonalGrid {
         String str = """
                 SELECT ST_AsText(geom)
                 FROM ST_HexagonGrid(
-                	:radius,
+                	:radius::float,
                 	ST_Transform(ST_SetSRID(ST_MakeBox2D(ST_Point(37.34, 55.55), ST_Point(37.88, 55.93)), 4326), 3857)
                 )
                 """;
