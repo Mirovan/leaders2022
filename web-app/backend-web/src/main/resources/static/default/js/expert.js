@@ -13,6 +13,41 @@ const map = new ol.Map({
 });
 
 
+//Popup Для карты
+var container = document.getElementById('popup');
+var content = document.getElementById('popup-content');
+var closer = document.getElementById('popup-closer');
+
+var overlay = new ol.Overlay({
+    element: container,
+    autoPan: true,
+    autoPanAnimation: {
+        duration: 250
+    }
+});
+map.addOverlay(overlay);
+
+map.on('pointermove', function (event) {
+    let coordinate = null;
+    let feature = map.forEachFeatureAtPixel(event.pixel, function(feature, layer) {
+        coordinate = event.coordinate;
+        return feature;
+    });
+
+    if (feature != null
+        && feature.get('geometry') != null
+        && feature.get('geometry') instanceof ol.geom.Point) {
+        this.getTargetElement().style.cursor = 'pointer';
+        content.innerHTML = feature.get('name');
+        overlay.setPosition(coordinate);
+    } else {
+        this.getTargetElement().style.cursor = '';
+        overlay.setPosition(undefined);
+        closer.blur();
+    }
+});
+
+
 //Нажатие на карту
 map.on('click', function (evt) {
     clearMap('NEAREST_OBJECT');
@@ -28,102 +63,125 @@ map.on('click', function (evt) {
 
     $.get("/api/kiosk/nearest", {latitude: lat, longitude: lon})
         .done(function (data) {
-            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/kiosk.png' width='25' />&nbsp;&nbsp;Киоски</th></tr>";
+            doKioskData(data);
 
-            for (let item in data) {
-                tableData += getInsertPostamatRow(
-                    data[item]["name"],
-                    data[item]["address"],
-                    data[item]["businessEntity"],
-                    data[item]["latitude"],
-                    data[item]["longitude"]);
+            $.get("/api/mfc/nearest", {latitude: lat, longitude: lon})
+                .done(function (data) {
+                    doMfcData(data);
 
-                var layer = createLayer('NEAREST_OBJECT', 'blue', 2, 100, data[item]["latitude"], data[item]["longitude"], "kiosk");
-                map.addLayer(layer);
-            }
+                    $.get("/api/library/nearest", {latitude: lat, longitude: lon})
+                        .done(function (data) {
+                            doLibraryData(data);
 
-            document.querySelector("#nearest-objects").innerHTML += tableData;
-        });
+                            $.get("/api/malls/nearest", {latitude: lat, longitude: lon})
+                                .done(function (data) {
+                                    doMallData(data);
 
-    $.get("/api/mfc/nearest", {latitude: lat, longitude: lon})
-        .done(function (data) {
-            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/mfc.png' width='25' />&nbsp;&nbsp;МФЦ</th></tr>";
-
-            for (let item in data) {
-                tableData += getInsertPostamatRow(
-                    data[item]["name"],
-                    data[item]["address"],
-                    data[item]["phone"],
-                    data[item]["latitude"],
-                    data[item]["longitude"]);
-
-                var layer = createLayer('NEAREST_OBJECT', 'green', 2, 100, data[item]["latitude"], data[item]["longitude"], "mfc");
-                map.addLayer(layer);
-            }
-
-            document.querySelector("#nearest-objects").innerHTML += tableData;
-        });
-
-    $.get("/api/library/nearest", {latitude: lat, longitude: lon})
-        .done(function (data) {
-            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/library.png' width='25' />&nbsp;&nbsp;Библиотеки</th></tr>";
-
-            for (let item in data) {
-                tableData += getInsertPostamatRow(
-                    data[item]["name"],
-                    data[item]["address"],
-                    data[item]["phone"],
-                    data[item]["latitude"],
-                    data[item]["longitude"]);
-
-                var layer = createLayer('NEAREST_OBJECT', '#7f6809', 2, 100, data[item]["latitude"], data[item]["longitude"], "library");
-                map.addLayer(layer);
-            }
-
-            document.querySelector("#nearest-objects").innerHTML += tableData;
-        });
-
-    $.get("/api/malls/nearest", {latitude: lat, longitude: lon})
-        .done(function (data) {
-            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/mall.png' width='25' />&nbsp;&nbsp;Торговый центры</th></tr>";
-
-            for (let item in data) {
-                tableData += getInsertPostamatRow(
-                    data[item]["name"],
-                    data[item]["address"],
-                    data[item]["phone"],
-                    data[item]["latitude"],
-                    data[item]["longitude"]);
-
-                var layer = createLayer('NEAREST_OBJECT', '#73097f', 2, 100, data[item]["latitude"], data[item]["longitude"], "mall");
-                map.addLayer(layer);
-            }
-
-            document.querySelector("#nearest-objects").innerHTML += tableData;
-        });
-
-
-    $.get("/api/supermarkets/nearest", {latitude: lat, longitude: lon})
-        .done(function (data) {
-            let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/supermarket.png' width='25' />&nbsp;&nbsp;Супермаркеты</th></tr>";
-
-            for (let item in data) {
-                tableData += getInsertPostamatRow(
-                    data[item]["name"],
-                    data[item]["address"],
-                    data[item]["phone"],
-                    data[item]["latitude"],
-                    data[item]["longitude"]);
-
-                var layer = createLayer('NEAREST_OBJECT', '#7f3209', 2, 100, data[item]["latitude"], data[item]["longitude"], "supermarket");
-                map.addLayer(layer);
-            }
-
-            document.querySelector("#nearest-objects").innerHTML += tableData;
+                                    $.get("/api/supermarkets/nearest", {latitude: lat, longitude: lon})
+                                        .done(function (data) {
+                                            doSupermarketData(data);
+                                        });
+                                });
+                        });
+                });
         });
 
 });
 
+
+function doKioskData(data) {
+    let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/kiosk.png' width='25' />&nbsp;&nbsp;Киоски</th></tr>";
+
+    for (let item in data) {
+        tableData += getInsertPostamatRow(
+            data[item]["name"],
+            data[item]["address"],
+            data[item]["businessEntity"],
+            data[item]["latitude"],
+            data[item]["longitude"]);
+
+        var layer = createLayer('NEAREST_OBJECT', 'blue', 2, 100, data[item], "kiosk");
+        map.addLayer(layer);
+    }
+
+    document.querySelector("#nearest-objects").innerHTML += tableData;
+}
+
+
+function doMfcData(data) {
+    let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/mfc.png' width='25' />&nbsp;&nbsp;МФЦ</th></tr>";
+
+    for (let item in data) {
+        tableData += getInsertPostamatRow(
+            data[item]["name"],
+            data[item]["address"],
+            data[item]["phone"],
+            data[item]["latitude"],
+            data[item]["longitude"]);
+
+        var layer = createLayer('NEAREST_OBJECT', 'green', 2, 100, data[item], "mfc");
+        map.addLayer(layer);
+    }
+
+    document.querySelector("#nearest-objects").innerHTML += tableData;
+}
+
+
+function doLibraryData(data) {
+    let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/library.png' width='25' />&nbsp;&nbsp;Библиотеки</th></tr>";
+
+    for (let item in data) {
+        tableData += getInsertPostamatRow(
+            data[item]["name"],
+            data[item]["address"],
+            data[item]["phone"],
+            data[item]["latitude"],
+            data[item]["longitude"]);
+
+        var layer = createLayer('NEAREST_OBJECT', '#7f6809', 2, 100, data[item], "library");
+        map.addLayer(layer);
+    }
+
+    document.querySelector("#nearest-objects").innerHTML += tableData;
+}
+
+
+function doMallData(data) {
+    let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/mall.png' width='25' />&nbsp;&nbsp;Торговый центры</th></tr>";
+
+    for (let item in data) {
+        tableData += getInsertPostamatRow(
+            data[item]["name"],
+            data[item]["address"],
+            data[item]["phone"],
+            data[item]["latitude"],
+            data[item]["longitude"]);
+
+        var layer = createLayer('NEAREST_OBJECT', '#73097f', 2, 100, data[item], "mall");
+        map.addLayer(layer);
+    }
+
+    document.querySelector("#nearest-objects").innerHTML += tableData;
+}
+
+
+function doSupermarketData(data) {
+    let tableData = "<tr><th colspan='3'><img src='/static/default/images/icons/supermarket.png' width='25' />&nbsp;&nbsp;Супермаркеты</th></tr>";
+
+    for (let item in data) {
+        tableData += getInsertPostamatRow(
+            data[item]["name"],
+            data[item]["address"],
+            data[item]["phone"],
+            data[item]["latitude"],
+            data[item]["longitude"]);
+
+        var layer = createLayer('NEAREST_OBJECT', '#7f3209', 2, 100, data[item], "supermarket");
+        map.addLayer(layer);
+    }
+
+    document.querySelector("#nearest-objects").innerHTML += tableData;
+}
 
 /**
  * Сохранение постамата
@@ -155,14 +213,24 @@ function clearMap(layerName) {
 /**
  * Создание слоя карты
  * */
-function createLayer(layerName, color, width, square, lat, lon, icon) {
+function createLayer(layerName, color, width, square, itemData, icon) {
+    let lat = itemData["latitude"];
+    let lon = itemData["longitude"];
+    let type = "";
+    if (icon == "kiosk") type = "Киоск: ";
+    if (icon == "mfc") type = "МФЦ: ";
+    if (icon == "library") type = "Библиотека: ";
+    if (icon == "mall") type = "ТЦ: ";
+    if (icon == "supermarket") type = "Супермаркет: ";
+    let name = "<strong>" + type + itemData["name"] + "</strong><br />" + itemData["address"];
+
     return new ol.layer.Vector({
         source: new ol.source.Vector({
             projection: 'EPSG:4326',
             features: [
                 new ol.Feature({
                     geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
-                    name: 'Somewhere near point ',
+                    name: name,
                 })
             ]
         }),
@@ -213,39 +281,41 @@ function calcMap() {
     let considerParking = $("#considerParking").is(":checked");
     let considerPostamat = $("#considerPostamat").is(":checked");
 
-    $.getJSON("/api/calc", {radius, kmlId, considerHouses, considerMalls, considerSupermarkets, considerMetro,
-        considerWorkCenter, considerChildHouse, considerParking, considerPostamat}, function (data) {
-            clearMap('SECTOR_OBJECT');
-            clearMap('HEATMAP');
-            var format = new ol.format.WKT();
-            var features = data.map(function(item) {
-                const feature = format.readFeature(item.wkt);
-                const w = Math.floor(item.weight * 512);
-                const r = w > 255 ? 255 : w;
-                const g = w < 255 ? 255 : (512 - w);
-                console.log(r, g);
-                feature.setStyle(new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(125,0,135,0.45)',
-                        width: '1',
-                        lineDash: [4]
-                    }),
-                    fill: new ol.style.Fill({ color: 'rgba(' + r + ', ' + g + ', 0, 0.5)' }),
-                }));
-                return feature;
-            });
-            var vectorSource = new ol.source.Vector({
-                features: features
-            });
-
-            map.addLayer(
-                new ol.layer.Vector({
-                    source: vectorSource,
-                    name: 'SECTOR_OBJECT',
-                    zIndex: 100
-                })
-            );
+    $.getJSON("/api/calc", {
+        radius, kmlId, considerHouses, considerMalls, considerSupermarkets, considerMetro,
+        considerWorkCenter, considerChildHouse, considerParking, considerPostamat
+    }, function (data) {
+        clearMap('SECTOR_OBJECT');
+        clearMap('HEATMAP');
+        var format = new ol.format.WKT();
+        var features = data.map(function (item) {
+            const feature = format.readFeature(item.wkt);
+            const w = Math.floor(item.weight * 512);
+            const r = w > 255 ? 255 : w;
+            const g = w < 255 ? 255 : (512 - w);
+            console.log(r, g);
+            feature.setStyle(new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(125,0,135,0.45)',
+                    width: '1',
+                    lineDash: [4]
+                }),
+                fill: new ol.style.Fill({color: 'rgba(' + r + ', ' + g + ', 0, 0.5)'}),
+            }));
+            return feature;
         });
+        var vectorSource = new ol.source.Vector({
+            features: features
+        });
+
+        map.addLayer(
+            new ol.layer.Vector({
+                source: vectorSource,
+                name: 'SECTOR_OBJECT',
+                zIndex: 100
+            })
+        );
+    });
 }
 
 
@@ -271,30 +341,30 @@ function showHexMap() {
         var format = new ol.format.WKT();
 
         $.getJSON("/api/calc/hexagon-map", {hexagonRadius: document.querySelector("#hexagonRadius").value}, function (data) {
-                var features = data.map(function(wkt) {
-                    return format.readFeature(wkt);
-                });
-                var vectorSource = new ol.source.Vector({
-                    features: features
-                });
-
-                map.addLayer(
-                    new ol.layer.Vector({
-                        source: vectorSource,
-                        style: [
-                            new ol.style.Style({
-                                stroke: new ol.style.Stroke({
-                                    color: 'rgba(125,0,135,0.45)',
-                                    width: '1',
-                                    lineDash: [4]
-                                })
-                            })
-                        ],
-                        name: 'HEXMAP',
-                        zIndex: 100
-                    })
-                );
+            var features = data.map(function (wkt) {
+                return format.readFeature(wkt);
             });
+            var vectorSource = new ol.source.Vector({
+                features: features
+            });
+
+            map.addLayer(
+                new ol.layer.Vector({
+                    source: vectorSource,
+                    style: [
+                        new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: 'rgba(125,0,135,0.45)',
+                                width: '1',
+                                lineDash: [4]
+                            })
+                        })
+                    ],
+                    name: 'HEXMAP',
+                    zIndex: 100
+                })
+            );
+        });
     } else {
         clearMap('HEXMAP');
     }
