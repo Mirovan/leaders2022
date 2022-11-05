@@ -54,8 +54,8 @@ public class CalcRestController {
             @RequestParam(value = "considerParking") boolean considerParking,
             @RequestParam(value = "considerPostamat") boolean considerPostamat
             ) {
-        if (radius < 200) radius = 200;
-        if (radius > 500) radius = 500;
+        if (radius < 300) radius = 300;
+        if (radius > 600) radius = 600;
         return calcService.calculate(radius, kmlId, considerHouses, considerMalls, considerSupermarkets, considerMetro,
                 considerPostamat, considerWorkCenter, considerChildHouse, considerParking);
     }
@@ -68,8 +68,8 @@ public class CalcRestController {
     @GetMapping("/hexagon-map")
     public List<String> generate(@RequestParam(value = "hexagonRadius", defaultValue = "300") Double hexagonRadius)
             throws FactoryException, TransformException {
-        if (hexagonRadius < 200) hexagonRadius = 200d;
-        if (hexagonRadius > 500) hexagonRadius = 500d;
+        if (hexagonRadius < 300) hexagonRadius = 300d;
+        if (hexagonRadius > 600) hexagonRadius = 600d;
         return hexagonalGrid.getHexagonalGrid(hexagonRadius);
     }
 }
