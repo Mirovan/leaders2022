@@ -272,6 +272,8 @@ function getInsertPostamatRow(name, address, addData, lat, lon) {
  * Расчет и вывод оптимальных секторов для установки постаматов
  * */
 function calcMap() {
+    $("#loader").show();
+
     let radius = $("#hexagonRadius").val();
     let kmlId = $("#heatmap-select").val();
     let considerHouses = $("#considerHouses").is(":checked");
@@ -318,6 +320,8 @@ function calcMap() {
                 zIndex: 100
             })
         );
+
+        $("#loader").hide();
     });
 }
 

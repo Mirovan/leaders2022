@@ -37,3 +37,12 @@ footer {
     left: -50px;
     min-width: 250px;
 }
+
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    z-index: 10000;
+}
