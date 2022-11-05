@@ -6,6 +6,12 @@
 
 <body>
 
+<div id="loader-bg">
+    <div id="loader">
+        <img src="/static/default/images/loader.gif" width="400"/>
+    </div>
+</div>
+
 <!-- Navigation -->
 <div th:replace="inc/top_nav.inc::top_nav"></div>
 
@@ -56,7 +62,8 @@
                         <label for="hexagonRadius" class="col-sm-4 col-form-label-sm"
                                style="margin: 0 0 0 -15px; font-size: 13px;">Радиус сетки (м<sup>2</sup>)</label>
                         <div class="col-sm-8">
-                            <input type="number" id="hexagonRadius" value="300" min="100" max="500" class="form-control form-control-sm"
+                            <input type="number" id="hexagonRadius" value="300" min="100" max="500"
+                                   class="form-control form-control-sm"
                                    placeholder="Радиус гексагона">
                         </div>
                     </div>
@@ -90,26 +97,26 @@
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
-                        <input class="form-check-input" type="checkbox" id="considerWorkCenter">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerWorkCenter" disabled="disabled">Учитывать
+                        <input class="form-check-input" type="checkbox" id="considerWorkCenter" disabled="disabled">
+                        <label class="form-check-label" style="font-size: 12px;" for="considerWorkCenter">Учитывать
                             бизнес центры</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
-                        <input class="form-check-input" type="checkbox" id="considerChildHouse">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerChildHouse" disabled="disabled">Учитывать
+                        <input class="form-check-input" type="checkbox" id="considerChildHouse" disabled="disabled">
+                        <label class="form-check-label" style="font-size: 12px;" for="considerChildHouse">Учитывать
                             детские сады</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
-                        <input class="form-check-input" type="checkbox" id="considerParking">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerParking" disabled="disabled">Учитывать
+                        <input class="form-check-input" type="checkbox" id="considerParking" disabled="disabled">
+                        <label class="form-check-label" style="font-size: 12px;" for="considerParking">Учитывать
                             парковки</label>
                     </div>
 
                     <div class="form-check" style="margin: 0 0 5px -15px;">
-                        <input class="form-check-input" type="checkbox" id="considerPostamat">
-                        <label class="form-check-label" style="font-size: 12px;" for="considerPostamat" disabled="disabled">Учитывать
+                        <input class="form-check-input" type="checkbox" id="considerPostamat" disabled="disabled">
+                        <label class="form-check-label" style="font-size: 12px;" for="considerPostamat">Учитывать
                             установленные постаматы</label>
                     </div>
 
