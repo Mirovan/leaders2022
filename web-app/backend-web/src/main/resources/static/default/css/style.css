@@ -48,6 +48,7 @@ footer {
     position: fixed;
     overflow: hidden;
     z-index: 10000;
+    display: none;
 }
 
 #loader {
