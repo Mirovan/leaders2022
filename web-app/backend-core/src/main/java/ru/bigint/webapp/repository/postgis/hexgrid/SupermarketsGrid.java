@@ -28,8 +28,9 @@ public class SupermarketsGrid {
                     CREATE TEMP TABLE hexgrid_temp (geom geography, i integer, j integer) ON COMMIT DROP;
                     CREATE TEMP TABLE supermarkets_temp (geom geography, id int) ON COMMIT DROP;
                     INSERT INTO supermarkets_temp
-                    SELECT ST_SetSRID(ST_MakePoint(longitude, latitude), 4326), id
-                    FROM supermarkets WHERE latitude is not null and longitude is not null;
+                    SELECT ST_SetSRID(ST_MakePoint(longitude, latitude), 4326), MIN(id)
+                    FROM supermarkets WHERE latitude is not null and longitude is not null
+                    GROUP BY name, address, about, latitude, longitude;
                     INSERT INTO hexgrid_temp
                     SELECT ST_Transform(ST_SetSRID(geom, 3857), 4326), i, j
                     FROM ST_HexagonGrid(

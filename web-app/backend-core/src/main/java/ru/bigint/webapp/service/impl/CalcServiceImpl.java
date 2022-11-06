@@ -8,10 +8,11 @@ import ru.bigint.webapp.service.iface.CalcService;
 import ru.bigint.webapp.service.iface.HouseService;
 import ru.bigint.webapp.service.iface.KmlJobService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 public class CalcServiceImpl implements CalcService {
@@ -47,20 +48,34 @@ public class CalcServiceImpl implements CalcService {
                                           boolean considerPostamat, boolean considerWorkCenter,
                                           boolean considerChildHouse, boolean considerParking) {
         Map<String, ColoredPolygon> grid = new HashMap<>();
+        ExecutorService threadPool = Executors.newFixedThreadPool(4);
         if (considerHouses) {
-            putToGrid(grid, housesGrid.getGrid(radius));
+            threadPool.submit(() -> putToGrid(grid, multiply(housesGrid.getGrid(radius), 10)));
         }
         if (considerMalls) {
-            putToGrid(grid, mallsGrid.getGrid(radius));
+            threadPool.submit(() -> putToGrid(grid, multiply(recalcWeightByPosition(mallsGrid.getGrid(radius)), 2)));
         }
         if (considerSupermarkets) {
-            putToGrid(grid, supermarketsGrid.getGrid(radius));
+            threadPool.submit(() -> putToGrid(grid, multiply(recalcWeightByPosition(supermarketsGrid.getGrid(radius)), 2)));
         }
         if (considerMetro) {
-            putToGrid(grid, metroGrid.getGrid(radius));
+            threadPool.submit(() -> putToGrid(grid, multiply(recalcWeightByPosition(metroGrid.getGrid(radius)), 4)));
+        }
+        threadPool.shutdown();
+        try {
+            threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         normalizeWeights(grid);
         return new ArrayList<>(grid.values());
+    }
+
+    private List<HexagonEntry> multiply(List<HexagonEntry> entries, double multiplier) {
+        for (HexagonEntry entry : entries) {
+            entry.getColoredPolygon().setWeight(entry.getColoredPolygon().getWeight() * multiplier);
+        }
+        return entries;
     }
 
     private void normalizeWeights(Map<String, ColoredPolygon> grid) {
@@ -70,13 +85,37 @@ public class CalcServiceImpl implements CalcService {
         }
     }
 
+    private List<HexagonEntry> recalcWeightByPosition(List<HexagonEntry> entries) {
+        List<Double> weights = entries.stream().map(HexagonEntry::getColoredPolygon).map(ColoredPolygon::getWeight)
+                .distinct().sorted().toList();
+        Map<Double, Double> weightToRecalculated = new HashMap<>();
+        int count = weights.size();
+        double step = 1d / (count - 1);
+        double newWeight = 0;
+        for (Double weight : weights) {
+            weightToRecalculated.put(weight, newWeight);
+            newWeight += step;
+        }
+        for (HexagonEntry hexagonEntry : entries) {
+            ColoredPolygon coloredPolygon = hexagonEntry.getColoredPolygon();
+            coloredPolygon.setWeight(weightToRecalculated.get(coloredPolygon.getWeight()));
+        }
+        return entries;
+    }
+
     private void putToGrid(Map<String, ColoredPolygon> hexagon, List<HexagonEntry> entries) {
-        for (HexagonEntry he : entries) {
-            if (hexagon.containsKey(he.getIndex())) {
-                double sum = hexagon.get(he.getIndex()).getWeight() + he.getColoredPolygon().getWeight();
-                he.getColoredPolygon().setWeight(sum);
+        double max = entries.stream().map(HexagonEntry::getColoredPolygon).mapToDouble(ColoredPolygon::getWeight).max().orElse(1);
+        for (HexagonEntry p : entries) {
+            p.getColoredPolygon().setWeight(p.getColoredPolygon().getWeight() / max);
+        }
+        synchronized (hexagon) {
+            for (HexagonEntry he : entries) {
+                if (hexagon.containsKey(he.getIndex())) {
+                    double sum = hexagon.get(he.getIndex()).getWeight() + he.getColoredPolygon().getWeight();
+                    he.getColoredPolygon().setWeight(sum);
+                }
+                hexagon.put(he.getIndex(), he.getColoredPolygon());
             }
-            hexagon.put(he.getIndex(), he.getColoredPolygon());
         }
     }
 }

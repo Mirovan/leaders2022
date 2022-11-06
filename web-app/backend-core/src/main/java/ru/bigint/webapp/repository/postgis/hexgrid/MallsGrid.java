@@ -50,7 +50,7 @@ public class MallsGrid {
         return namedParameterJdbcTemplate.queryForStream(query, Map.of("radius", hexagonRadius), (rs, row) -> {
             ColoredPolygon p = new ColoredPolygon();
             p.setWkt(rs.getString("wkt"));
-            p.setWeight(rs.getInt("cnt") * 3);
+            p.setWeight(rs.getInt("cnt"));
             HexagonEntry e = new HexagonEntry();
             e.setIndex(rs.getString("i") + "_" + rs.getString("j"));
             e.setColoredPolygon(p);
